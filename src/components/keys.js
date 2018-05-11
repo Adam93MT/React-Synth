@@ -5,22 +5,25 @@ class PianoKey extends Component {
 
 	constructor() {
 		super()
-		this.isPressed = this.isPressed.bind(this)
+		this.state = {
+			pressed: false
+		}
 	}
 
 	componentDidMount(){
 
 	}
 
-	isPressed(){
-		return this.props.textKey === this.props.charPressed
+	static getDerivedStateFromProps(nextProps, prevState) {
+		// console.log(nextProps.keyPressed, nextProps.textKey.toUpperCase(), nextProps.keyPressed.includes(nextProps.textKey.toUpperCase()))
+		return {pressed: nextProps.keyPressed.includes(nextProps.textKey.toUpperCase())}
 	}
 
-	render() {
-		return (
-			<div></div>
-		)
+	hasAccidental(){
+		return this.props.note !== 'C' && this.props.note !== 'F'
 	}
+
+	render() { return ( <div></div> ) }
 }
 
 export class WhiteKey extends PianoKey {
@@ -28,22 +31,17 @@ export class WhiteKey extends PianoKey {
 		super(props)
 	}
 
-	hasAccidental(){
-		// console.log(this.props.note)
-		return this.props.note !== 'C' && this.props.note !== 'F'
-	}
-
 	render() {
 		let idx = this.props.index
 		return (
-			<div className={`key white-key ${this.isPressed() ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
+			<div className={`key white-key ${this.state.pressed ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
 
 					{this.hasAccidental() 
 						? <BlackKey 
 							note={`${this.props.note}b`} 
 							octave={this.props.octave} 
 							textKey={ Constants.textKeys[0][idx]}
-							charPressed={this.props.charPressed}
+							keyPressed={this.props.keyPressed}
 						/> 
 						: null
 					}
@@ -61,7 +59,7 @@ export class BlackKey extends PianoKey {
 
 	render() {
 		return (
-			<div className={`key black-key ${this.isPressed() ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
+			<div className={`key black-key ${this.state.pressed ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
 					{this.props.textKey.toUpperCase()}
 			</div>
 		)

@@ -8,29 +8,34 @@ export default class Keyboard extends Component {
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
 		this.octave = 4
-		this.handleKeyStroke = this.handleKeyStroke.bind(this)
+		this.handleKeyDown = this.handleKeyDown.bind(this)
 		this.handleKeyUp = this.handleKeyUp.bind(this)
 		this.state = {
-			charPressed: null
+			keyPressed: []
 		}
 	}
 
 	componentWillMount(){
-		window.addEventListener("keypress", this.handleKeyStroke, false);
+		window.addEventListener("keydown", this.handleKeyDown, false);
 		window.addEventListener("keyup", this.handleKeyUp, false);
 	}
 
-	handleKeyStroke(e){
-    	console.log('Key press', e.keyCode, String.fromCharCode(e.keyCode))
-    	this.setState({
-    		charPressed: String.fromCharCode(e.keyCode)
-    	})
+	handleKeyDown(e){
+		let thisChar = Constants.keyboardMap[e.keyCode]
+    	if (!this.state.keyPressed.includes(thisChar)) {
+    		this.setState(prevState => ({
+    			keyPressed: [...prevState.keyPressed, thisChar]
+    		}))
+    	} else {
+    		// leave state
+    	}
   	}
 
   	handleKeyUp(e){
-  		this.setState({
-  			charPressed: null
-  		})
+  		let thisChar = Constants.keyboardMap[e.keyCode]
+  		this.setState(prevState => ({
+  			keyPressed: this.state.keyPressed.filter((code) => code !== thisChar)
+  		}))
   	}
 
 	setupKeyboardNotes(){
@@ -45,6 +50,7 @@ export default class Keyboard extends Component {
 	}
 
 	render() {
+		// console.log(this.state.keyPressed)
 		let keyboardNotes = this.setupKeyboardNotes()
 		let whiteKeys = keyboardNotes.filter((thisKey) => thisKey.noteName.length <= 1)
 		// Every white key has a (flat) black key (except C & F)
@@ -54,7 +60,7 @@ export default class Keyboard extends Component {
 				octave={thisKey.octave} 
 				textKey={Constants.textKeys[1][idx]} 
 				index={idx} 
-				charPressed={this.state.charPressed}
+				keyPressed={this.state.keyPressed}
 				key={thisKey.noteName + thisKey.octave}
 			/>
 		)

@@ -1,6 +1,7 @@
 body {
   margin: 0;
-  font-family: -apple-system, "Roboto", sans-serif; }
+  font-family: -apple-system, "Roboto", sans-serif;
+  font-size: 14px; }
 
 .keyboard {
   display: flex;
@@ -39,7 +40,7 @@ body {
         -moz-box-shadow: 0 0 2px #030303;
         box-shadow: 0 0 2px #030303; }
       .keyboard .key.white-key .note-text {
-        margin-bottom: 42px; }
+        margin-bottom: 43px; }
     .keyboard .key.black-key {
       background: #0d0d0d;
       background: -moz-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
