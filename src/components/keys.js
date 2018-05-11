@@ -1,34 +1,68 @@
 import React, { Component } from 'react';
+import Constants from './constants.js'
 
-export class WhiteKey extends Component {
-	constructor(props) {
-		super(props)
+class PianoKey extends Component {
+
+	constructor() {
+		super()
+		this.isPressed = this.isPressed.bind(this)
 	}
 
-	hasFlatKey(){
-		console.log(this.props.note)
-		return this.props.note !== 'C' && this.props.note !== 'F'
+	componentDidMount(){
+
+	}
+
+	isPressed(){
+		return this.props.textKey === this.props.charPressed
 	}
 
 	render() {
 		return (
-			<div className="key white-key" id={this.props.note + this.props.octave}>
-				{this.hasFlatKey() ? <BlackKey note={`${this.props.note}b`} octave={this.props.octave}/> : ''}
-				<span className="note-text">{this.props.note}</span>
+			<div></div>
+		)
+	}
+}
+
+export class WhiteKey extends PianoKey {
+	constructor(props) {
+		super(props)
+	}
+
+	hasAccidental(){
+		// console.log(this.props.note)
+		return this.props.note !== 'C' && this.props.note !== 'F'
+	}
+
+	render() {
+		let idx = this.props.index
+		return (
+			<div className={`key white-key ${this.isPressed() ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
+
+					{this.hasAccidental() 
+						? <BlackKey 
+							note={`${this.props.note}b`} 
+							octave={this.props.octave} 
+							textKey={ Constants.textKeys[0][idx]}
+							charPressed={this.props.charPressed}
+						/> 
+						: null
+					}
+
+					<span className="note-text">{this.props.textKey.toUpperCase()}</span>
 			</div>
 		)
 	}
 }
 
-export class BlackKey extends Component {
+export class BlackKey extends PianoKey {
 	constructor(props) {
 		super(props)
 	}
 
 	render() {
 		return (
-			<div className="key black-key" id={this.props.note + this.props.octave}>
-				{this.props.note}
+			<div className={`key black-key ${this.isPressed() ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
+					{this.props.textKey.toUpperCase()}
 			</div>
 		)
 	}

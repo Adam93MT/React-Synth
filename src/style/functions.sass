@@ -1,0 +1,44 @@
+=verticalGradient($topColor, $bottomColor, $endPct)
+	background: $topColor /* Old browsers */
+	background: -moz-linear-gradient(top,  $topColor 0%, $bottomColor $endPct) /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left botton, color-stop(0%, $topColor), color-stop($endPct, $bottomColor)) /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  $topColor 0%, $bottomColor $endPct) /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  $topColor 0%, $bottomColor $endPct) /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  $topColor 0%, $bottomColor $endPct) /* IE10+ */
+	background: linear-gradient(to bottom,  $topColor 0%, $bottomColor $endPct) /* W3C */
+
+=angledGradient($startCorner, $endCorner, $startColor, $endColor, $endPct)
+	background: $endColor /* Old browsers */
+	background: -moz-linear-gradient(to $endCorner,  $startColor 0%, $endColor $endPct) /* FF3.6+ */
+	background: -webkit-gradient(linear, $startCorner, $endCorner, color-stop(0%, $startColor), color-stop($endPct, $endColor)) /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(to $endCorner,  $startColor 0%, $endColor $endPct) /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(to $endCorner,  $startColor 0%, $endColor $endPct) /* Opera 11.10+ */
+	background: -ms-linear-gradient(to $endCorner,  $startColor 0%, $endColor $endPct) /* IE10+ */
+	background: linear-gradient(to $endCorner,  $startColor 0%, $endColor $endPct) /* W3C */
+
+=CornerToCornerGradient($startColor, $endColor)
+	+angledGradient(top left, bottom right, $startColor, $endColor, 100%)
+
+=radialGradient($from, $to)
+	background: -moz-radial-gradient(center, circle cover, $from 0%, $to 100%)
+	background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%, $from), color-stop(100%, $to))
+	background: -webkit-radial-gradient(center, circle cover, $from 0%, $to 100%)
+	background: -o-radial-gradient(center, circle cover, $from 0%, $to 100%)
+	background: -ms-radial-gradient(center, circle cover, $from 0%, $to 100%)
+	background: radial-gradient(center, circle cover, $from 0%, $to 100%)
+	background-color: $to
+
+=animate-elements($what, $when, $how)
+	-webkit-transition: $what $when $how
+	-moz-transition: 	$what $when $how
+	transition: 		$what $when $how
+
+=box-shadow($top, $left, $blur, $color, $inset: false)
+	@if $inset 
+		-webkit-box-shadow:inset $top $left $blur $color
+		-moz-box-shadow:inset 	 $top $left $blur $color
+		box-shadow:inset 		 $top $left $blur $color
+	@else
+		-webkit-box-shadow: $top $left $blur $color
+		-moz-box-shadow: 	$top $left $blur $color
+		box-shadow: 		$top $left $blur $color

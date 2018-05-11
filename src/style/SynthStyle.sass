@@ -1,38 +1,65 @@
+@import 'functions'
+
 $white: #fafafa
-$black: #101010
+$off-white: #F2F2F2
+$black: #030303
+$off-black: #0d0d0d
+$white-key-height: 250px
+$white-key-margin: 2px
+$black-key-height: 150px
+$font-size: 16px
 
 
 body 
 	margin: 0
+	font-family: -apple-system, "Roboto", sans-serif
 
 .keyboard
 	display: flex
 	flex-direction: row
 	justify-content: space-evenly
+	margin: auto -$white-key-margin
 
 	.key
 		flex-grow: 1
+		flex-basis: 0
 		text-align: center
 		vertical-align: middle
 		position: relative
-		display: inline-block
+		display: flex
+		flex-direction: row
+		align-items: center
+		justify-content: center
+
+		border-radius: 0 0 4px 4px
+		+box-shadow(0, 2px, 4px, $black)
 
 		&.white-key
-			background-color: $white
-			color: $black
-			border: 1px solid $black
-			margin: -1px
-			height: 250px
-
 			position: relative
-			flex-basis: 0
+			align-items: flex-end
+			// background-color: $white
+			color: $black
+			+CornerToCornerGradient($white, $off-white)
+			margin: -1px $white-key-margin 0 $white-key-margin
+			height: $white-key-height
+
+			&.pressed, &:active
+				+box-shadow(0, 0, 2px, $black)			
+			
+			.note-text
+				margin-bottom: ($white-key-height - $black-key-height) / 2 - $font-size/2
 
 		&.black-key
-			background-color: $black
+			// background-color: $black
+			+CornerToCornerGradient($black, $off-black)
 			color: $white
-			height: 150px
+			height: $black-key-height
 			width: 50%
 			position: absolute
 			top: 0
 			left: 0
 			transform: translateX(-50%)
+
+			&.pressed, &:active
+				+box-shadow(0, 0, 2px, $black)
+

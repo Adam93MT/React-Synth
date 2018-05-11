@@ -1,26 +1,53 @@
 body {
-  margin: 0; }
+  margin: 0;
+  font-family: -apple-system, "Roboto", sans-serif; }
 
 .keyboard {
   display: flex;
   flex-direction: row;
-  justify-content: space-evenly; }
+  justify-content: space-evenly;
+  margin: auto-2px; }
   .keyboard .key {
     flex-grow: 1;
+    flex-basis: 0;
     text-align: center;
     vertical-align: middle;
     position: relative;
-    display: inline-block; }
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 0 4px 4px;
+    -webkit-box-shadow: 0 2px 4px #030303;
+    -moz-box-shadow: 0 2px 4px #030303;
+    box-shadow: 0 2px 4px #030303; }
     .keyboard .key.white-key {
-      background-color: #fafafa;
-      color: #101010;
-      border: 1px solid #101010;
-      margin: -1px;
-      height: 250px;
       position: relative;
-      flex-basis: 0; }
+      align-items: flex-end;
+      color: #030303;
+      background: #F2F2F2;
+      background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
+      background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      margin: -1px 2px 0 2px;
+      height: 250px; }
+      .keyboard .key.white-key.pressed, .keyboard .key.white-key:active {
+        -webkit-box-shadow: 0 0 2px #030303;
+        -moz-box-shadow: 0 0 2px #030303;
+        box-shadow: 0 0 2px #030303; }
+      .keyboard .key.white-key .note-text {
+        margin-bottom: 42px; }
     .keyboard .key.black-key {
-      background-color: #101010;
+      background: #0d0d0d;
+      background: -moz-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #030303), color-stop(100%, #0d0d0d));
+      background: -webkit-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
+      background: -o-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
+      background: -ms-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
+      background: linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
       color: #fafafa;
       height: 150px;
       width: 50%;
@@ -28,5 +55,9 @@ body {
       top: 0;
       left: 0;
       transform: translateX(-50%); }
+      .keyboard .key.black-key.pressed, .keyboard .key.black-key:active {
+        -webkit-box-shadow: 0 0 2px #030303;
+        -moz-box-shadow: 0 0 2px #030303;
+        box-shadow: 0 0 2px #030303; }
 
 /*# sourceMappingURL=SynthStyle.css.map */
