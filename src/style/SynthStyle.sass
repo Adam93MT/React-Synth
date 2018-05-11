@@ -1,0 +1,38 @@
+$white: #fafafa
+$black: #101010
+
+
+body 
+	margin: 0
+
+.keyboard
+	display: flex
+	flex-direction: row
+	justify-content: space-evenly
+
+	.key
+		flex-grow: 1
+		text-align: center
+		vertical-align: middle
+		position: relative
+		display: inline-block
+
+		&.white-key
+			background-color: $white
+			color: $black
+			border: 1px solid $black
+			margin: -1px
+			height: 250px
+
+			position: relative
+			flex-basis: 0
+
+		&.black-key
+			background-color: $black
+			color: $white
+			height: 150px
+			width: 50%
+			position: absolute
+			top: 0
+			left: 0
+			transform: translateX(-50%)
