@@ -1,10 +1,15 @@
 import React, { Component } from 'react';
+import Tone from 'tone'
 import { WhiteKey } from './keys.js'
 import Constants from './constants.js'
 
-export default class Keyboard extends Component {
+export default class KeyboardController extends Component {
 	constructor(){
 		super()
+		this.Synth = new Tone.PolySynth({
+			polyphony: 8,
+			voice: Tone.Synth
+		})
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
 		this.octave = 4
@@ -15,9 +20,14 @@ export default class Keyboard extends Component {
 		}
 	}
 
-	componentWillMount(){
+	componentDidMount(){
 		window.addEventListener("keydown", this.handleKeyDown, false);
 		window.addEventListener("keyup", this.handleKeyUp, false);
+		this.Synth.toMaster()
+	}
+	componentWillUnmount(){
+		window.removeEventListener("keydown", this.handleKeyDown, false);
+		window.removeEventListener("keyup", this.handleKeyUp, false);
 	}
 
 	handleKeyDown(e){
@@ -27,7 +37,7 @@ export default class Keyboard extends Component {
     			keyPressed: [...prevState.keyPressed, thisChar]
     		}))
     	} else {
-    		// leave state
+    		// leave state as is
     	}
   	}
 
@@ -50,7 +60,6 @@ export default class Keyboard extends Component {
 	}
 
 	render() {
-		// console.log(this.state.keyPressed)
 		let keyboardNotes = this.setupKeyboardNotes()
 		let whiteKeys = keyboardNotes.filter((thisKey) => thisKey.noteName.length <= 1)
 		// Every white key has a (flat) black key (except C & F)
@@ -61,6 +70,7 @@ export default class Keyboard extends Component {
 				textKey={Constants.textKeys[1][idx]} 
 				index={idx} 
 				keyPressed={this.state.keyPressed}
+				Synth={this.Synth}
 				key={thisKey.noteName + thisKey.octave}
 			/>
 		)
@@ -72,6 +82,3 @@ export default class Keyboard extends Component {
 		)
 	}
 }
-
-//  # #   # # #   # # 
-// c d e f g a b c d e f

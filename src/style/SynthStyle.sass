@@ -2,8 +2,10 @@
 
 $white: #fafafa
 $off-white: #F2F2F2
-$black: #030303
-$off-black: #0d0d0d
+$light-grey: #eaeaea
+$dark-gray: #404040
+$off-black: #151515
+$black: #060606
 $white-key-height: 250px
 $white-key-margin: 2px
 $black-key-height: 150px
@@ -35,23 +37,24 @@ body
 		border-radius: 0 0 4px 4px
 		+box-shadow(0, 2px, 4px, $black)
 
+		&.pressed, &:active
+			+box-shadow(0, 0, 2px, $black)
+
 		&.white-key
 			position: relative
 			align-items: flex-end
-			// background-color: $white
 			color: $black
 			+CornerToCornerGradient($white, $off-white)
 			margin: -1px $white-key-margin 0 $white-key-margin
 			height: $white-key-height
 
 			&.pressed, &:active
-				+box-shadow(0, 0, 2px, $black)			
+				+CornerToCornerGradient($off-white, $light-grey)
 			
 			.note-text
 				margin-bottom: ($white-key-height - $black-key-height) / 2 - $font-size/2
 
 		&.black-key
-			// background-color: $black
 			+CornerToCornerGradient($black, $off-black)
 			color: $white
 			height: $black-key-height
@@ -63,4 +66,8 @@ body
 
 			&.pressed, &:active
 				+box-shadow(0, 0, 2px, $black)
+				+CornerToCornerGradient($off-black, $dark-gray)
+
+
+		
 

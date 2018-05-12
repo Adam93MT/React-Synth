@@ -19,13 +19,17 @@ body {
     align-items: center;
     justify-content: center;
     border-radius: 0 0 4px 4px;
-    -webkit-box-shadow: 0 2px 4px #030303;
-    -moz-box-shadow: 0 2px 4px #030303;
-    box-shadow: 0 2px 4px #030303; }
+    -webkit-box-shadow: 0 2px 4px #060606;
+    -moz-box-shadow: 0 2px 4px #060606;
+    box-shadow: 0 2px 4px #060606; }
+    .keyboard .key.pressed, .keyboard .key:active {
+      -webkit-box-shadow: 0 0 2px #060606;
+      -moz-box-shadow: 0 0 2px #060606;
+      box-shadow: 0 0 2px #060606; }
     .keyboard .key.white-key {
       position: relative;
       align-items: flex-end;
-      color: #030303;
+      color: #060606;
       background: #F2F2F2;
       background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
       background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
@@ -36,19 +40,23 @@ body {
       margin: -1px 2px 0 2px;
       height: 250px; }
       .keyboard .key.white-key.pressed, .keyboard .key.white-key:active {
-        -webkit-box-shadow: 0 0 2px #030303;
-        -moz-box-shadow: 0 0 2px #030303;
-        box-shadow: 0 0 2px #030303; }
+        background: #eaeaea;
+        background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #eaeaea));
+        background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%); }
       .keyboard .key.white-key .note-text {
         margin-bottom: 43px; }
     .keyboard .key.black-key {
-      background: #0d0d0d;
-      background: -moz-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
-      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #030303), color-stop(100%, #0d0d0d));
-      background: -webkit-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
-      background: -o-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
-      background: -ms-linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
-      background: linear-gradient(to bottom right, #030303 0%, #0d0d0d 100%);
+      background: #151515;
+      background: -moz-linear-gradient(to bottom right, #060606 0%, #151515 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #060606), color-stop(100%, #151515));
+      background: -webkit-linear-gradient(to bottom right, #060606 0%, #151515 100%);
+      background: -o-linear-gradient(to bottom right, #060606 0%, #151515 100%);
+      background: -ms-linear-gradient(to bottom right, #060606 0%, #151515 100%);
+      background: linear-gradient(to bottom right, #060606 0%, #151515 100%);
       color: #fafafa;
       height: 150px;
       width: 50%;
@@ -57,8 +65,15 @@ body {
       left: 0;
       transform: translateX(-50%); }
       .keyboard .key.black-key.pressed, .keyboard .key.black-key:active {
-        -webkit-box-shadow: 0 0 2px #030303;
-        -moz-box-shadow: 0 0 2px #030303;
-        box-shadow: 0 0 2px #030303; }
+        -webkit-box-shadow: 0 0 2px #060606;
+        -moz-box-shadow: 0 0 2px #060606;
+        box-shadow: 0 0 2px #060606;
+        background: #404040;
+        background: -moz-linear-gradient(to bottom right, #151515 0%, #404040 100%);
+        background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #151515), color-stop(100%, #404040));
+        background: -webkit-linear-gradient(to bottom right, #151515 0%, #404040 100%);
+        background: -o-linear-gradient(to bottom right, #151515 0%, #404040 100%);
+        background: -ms-linear-gradient(to bottom right, #151515 0%, #404040 100%);
+        background: linear-gradient(to bottom right, #151515 0%, #404040 100%); }
 
 /*# sourceMappingURL=SynthStyle.css.map */

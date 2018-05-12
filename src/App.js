@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Keyboard from './components/keyboard.js'
+import KeyboardController from './components/keyboard.js'
 import './style/SynthStyle.css'
 
 class App extends Component {
@@ -25,7 +25,7 @@ class App extends Component {
   render() {
     return (
       <div className="App">
-        <Keyboard windowSize={this.state}/>
+        <KeyboardController windowSize={this.state}/>
       </div>
     );
   }
