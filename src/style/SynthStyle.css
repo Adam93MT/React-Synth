@@ -8,6 +8,16 @@ body {
   flex-direction: row;
   justify-content: space-evenly;
   margin: auto-2px; }
+  .keyboard .key-container {
+    flex-grow: 1;
+    flex-basis: 0;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center; }
   .keyboard .key {
     flex-grow: 1;
     flex-basis: 0;

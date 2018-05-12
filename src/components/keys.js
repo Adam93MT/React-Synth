@@ -37,26 +37,10 @@ class PianoKey extends Component {
 }
 
 export class WhiteKey extends PianoKey {
-	hasAccidental(){
-		return this.props.note !== 'C' && this.props.note !== 'F'
-	}
-
 	render() {
 		return (
 			<div className={`key white-key ${this.state.pressed ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
-
-					{this.hasAccidental() 
-						? <BlackKey 
-							note={`${this.props.note}b`} 
-							octave={this.props.octave} 
-							textKey={ Constants.textKeys[0][this.props.index]}
-							keyPressed={this.props.keyPressed}
-							Synth={this.props.Synth}
-						/> 
-						: null
-					}
-
-					<span className="note-text">{this.props.textKey.toUpperCase()}</span>
+				<span className="note-text">{this.props.textKey.toUpperCase()}</span>
 			</div>
 		)
 	}
@@ -66,7 +50,7 @@ export class BlackKey extends PianoKey {
 	render() {
 		return (
 			<div className={`key black-key ${this.state.pressed ? 'pressed' : ''}`} id={this.props.note + this.props.octave}>
-					{this.props.textKey.toUpperCase()}
+				<span className="note-text">{this.props.textKey.toUpperCase()}</span>
 			</div>
 		)
 	}

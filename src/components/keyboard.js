@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Tone from 'tone'
-import { WhiteKey } from './keys.js'
+import { WhiteKey, BlackKey } from './keys.js'
 import Constants from './constants.js'
 
 export default class KeyboardController extends Component {
@@ -64,7 +64,7 @@ export default class KeyboardController extends Component {
 		let whiteKeys = keyboardNotes.filter((thisKey) => thisKey.noteName.length <= 1)
 		// Every white key has a (flat) black key (except C & F)
 		let Keyboard = whiteKeys.map((thisKey, idx) => 
-			<WhiteKey 
+			<KeyContainer 
 				note={thisKey.noteName} 
 				octave={thisKey.octave} 
 				textKey={Constants.textKeys[1][idx]} 
@@ -78,6 +78,35 @@ export default class KeyboardController extends Component {
 		return (
 			<div className="keyboard">
 				{ Keyboard }
+			</div>
+		)
+	}
+}
+
+class KeyContainer extends Component {
+	hasAccidental(){
+		return this.props.note !== 'C' && this.props.note !== 'F'
+	}
+	render() {
+		return (
+			<div className="key-container">
+				<WhiteKey 
+						note={this.props.note} 
+						octave={this.props.octave} 
+						textKey={ Constants.textKeys[1][this.props.index]}
+						keyPressed={this.props.keyPressed}
+						Synth={this.props.Synth}
+				/>
+				{this.hasAccidental() 
+					? <BlackKey 
+						note={`${this.props.note}b`} 
+						octave={this.props.octave} 
+						textKey={ Constants.textKeys[0][this.props.index]}
+						keyPressed={this.props.keyPressed}
+						Synth={this.props.Synth}
+					/> 
+					: null
+				}
 			</div>
 		)
 	}
