@@ -1,6 +1,7 @@
 body {
   margin: 0;
   font-family: -apple-system, "Roboto", sans-serif;
+  font-style: italic;
   font-size: 14px; }
 
 .keyboard {
@@ -28,6 +29,7 @@ body {
     flex-direction: row;
     align-items: center;
     justify-content: center;
+    cursor: pointer;
     border-radius: 0 0 4px 4px;
     -webkit-box-shadow: 0 2px 4px #060606;
     -moz-box-shadow: 0 2px 4px #060606;
