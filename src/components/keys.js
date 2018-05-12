@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Constants from './constants.js'
+// import Constants from './constants.js'
 
 class PianoKey extends Component {
 
@@ -60,7 +60,8 @@ export class WhiteKey extends PianoKey {
 				className={`key white-key ${this.state.pressed ? 'pressed' : ''}`} 
 				id={this.props.note + this.props.octave}
 				onMouseDown={this.handleClickDown}
-				onMouseUp={this.handleClickUp}>
+				onMouseUp={this.handleClickUp}
+				onMouseOut={this.handleClickUp}>
 					<span className="note-text">{this.props.textKey.toUpperCase()}</span>
 			</div>
 		)
@@ -74,8 +75,9 @@ export class BlackKey extends PianoKey {
 				className={`key black-key ${this.state.pressed ? 'pressed' : ''}`} 
 				id={this.props.note + this.props.octave}
 				onMouseDown={this.handleClickDown}
-				onMouseUp={this.handleClickUp}>
-				<span className="note-text">{this.props.textKey.toUpperCase()}</span>
+				onMouseUp={this.handleClickUp}
+				onMouseOut={this.handleClickUp}>
+					<span className="note-text">{this.props.textKey.toUpperCase()}</span>
 			</div>
 		)
 	}
