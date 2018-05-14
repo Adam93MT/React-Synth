@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-// import Constants from './constants.js'
+import Constants from './constants.js'
 
-class PianoKey extends Component {
+export class PianoKey extends Component {
 
 	constructor() {
 		super()
@@ -18,20 +18,22 @@ class PianoKey extends Component {
 	}
 
 	static getDerivedStateFromProps(nextProps, prevState) {
-		// console.log(nextProps.keyPressed, nextProps.textKey.toUpperCase(), nextProps.keyPressed.includes(nextProps.textKey.toUpperCase()))
-		return {pressed: nextProps.keyPressed.includes(nextProps.textKey.toUpperCase())}
+		// console.log(nextProps.keysPressed, nextProps.textKey.toUpperCase(), nextProps.keysPressed.includes(nextProps.textKey.toUpperCase()))
+		return {pressed: nextProps.keysPressed.includes(nextProps.textKey.toUpperCase())}
 	}
 
-	componentDidUpdate(prevProps, prevState){
-		if (this.state.pressed !== prevState.pressed) {
-			if (this.state.pressed) {
-				this.props.Synth.triggerAttack(this.getFullNoteName())
-			}
-			else {
-				this.props.Synth.triggerRelease(this.getFullNoteName())
-			}
-		}
-	}
+	// componentDidUpdate(prevProps, prevState){
+	// 	if (this.isNoteKeyPress(this.props.textKey)) {
+	// 		if (this.state.pressed !== prevState.pressed) {
+	// 			if (this.state.pressed) {
+	// 				this.props.playNote(this.getFullNoteName())
+	// 			}
+	// 			else {
+	// 				this.props.releaseNote(this.getFullNoteName())
+	// 			}
+	// 		}
+	// 	}
+	// }
 
 	handleClickDown(){
 		this.setState({
@@ -49,6 +51,14 @@ class PianoKey extends Component {
 		return this.props.note + this.props.octave
 	}
 
+	isNoteKeyPress(key){
+  		return Constants.textKeys[0].includes(key.toLowerCase()) || Constants.textKeys[1].includes(key.toLowerCase())
+  	}
+
+  	hasPressedClass() {
+  		return this.state.pressed ? 'pressed' : ''
+  	}
+
 	// placeholder render function
 	render() { return ( <div></div> ) }
 }
@@ -57,12 +67,12 @@ export class WhiteKey extends PianoKey {
 	render() {
 		return (
 			<div 
-				className={`key white-key ${this.state.pressed ? 'pressed' : ''}`} 
+				className={`key white-key ${this.hasPressedClass()}`} 
 				id={this.props.note + this.props.octave}
 				onMouseDown={this.handleClickDown}
 				onMouseUp={this.handleClickUp}
 				onMouseOut={this.handleClickUp}>
-					<span className="note-text">{this.props.textKey.toUpperCase()}</span>
+					<span className="key-text">{this.props.textKey.toUpperCase()}</span>
 			</div>
 		)
 	}
@@ -72,12 +82,12 @@ export class BlackKey extends PianoKey {
 	render() {
 		return (
 			<div 
-				className={`key black-key ${this.state.pressed ? 'pressed' : ''}`} 
+				className={`key black-key ${this.hasPressedClass()}`} 
 				id={this.props.note + this.props.octave}
 				onMouseDown={this.handleClickDown}
 				onMouseUp={this.handleClickUp}
 				onMouseOut={this.handleClickUp}>
-					<span className="note-text">{this.props.textKey.toUpperCase()}</span>
+					<span className="key-text">{this.props.textKey.toUpperCase()}</span>
 			</div>
 		)
 	}

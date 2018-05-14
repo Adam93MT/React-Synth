@@ -1,30 +1,40 @@
 import React, { Component } from 'react';
 import Tone from 'tone'
 import { WhiteKey, BlackKey } from './keys.js'
+import { UpperControls, LowerControls } from './controls.js'
 import Constants from './constants.js'
+
+// =============================== //
+// ===== KEYBOARD CONTROLLER ===== //
+// =============================== //
 
 export default class KeyboardController extends Component {
 	constructor(){
 		super()
 		this.Synth = new Tone.PolySynth({
-			polyphony: 8,
-			volume: -3,
+			polyphony: 12,
+			volume: -12,
 			voice: Tone.Synth
 		})
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
-		this.octaveMinMax = [1, 7]
+		this.octaveMinMax = [2, 7]
 		this.handleKeyDown = this.handleKeyDown.bind(this)
 		this.handleKeyUp = this.handleKeyUp.bind(this)
+		this.incrementOctave = this.incrementOctave.bind(this)
+		this.getNoteFromTextKey = this.getNoteFromTextKey.bind(this)
 		this.state = {
-			keyPressed: [],
-			octave: 4
+			keysPressed: [],
+			octave: 4,
+			notesRinging: []
 		}
 	}
 
 	componentDidMount(){
 		window.addEventListener("keydown", this.handleKeyDown, false);
 		window.addEventListener("keyup", this.handleKeyUp, false);
+
+		this.setupSynth()
 		this.Synth.toMaster()
 	}
 	componentWillUnmount(){
@@ -32,16 +42,44 @@ export default class KeyboardController extends Component {
 		window.removeEventListener("keyup", this.handleKeyUp, false);
 	}
 
+	setupSynth(){
+		this.Synth.set({
+			oscillator: {
+				type: "sine"
+			},
+			envelope: {
+				attack: 0,
+				decay: 2.7,
+				sustain: 0.2,
+				release: 0.15
+			}
+		})
+	}
+
 	handleKeyDown(e){
 		let thisChar = Constants.keyboardMap[e.keyCode]
-    	if (this.isValidKey(thisChar) && !this.state.keyPressed.includes(thisChar)) {
+    	if (this.isValidKeyPress(thisChar) && !this.state.keysPressed.includes(thisChar)) {
+    		// add to keysPressed Array
     		this.setState(prevState => ({
-    			keyPressed: [...prevState.keyPressed, thisChar]
+    			keysPressed: [...prevState.keysPressed, thisChar]
     		}))
-    	} else if (thisChar === 'X') {
-    		this.incrementOctave(1)
-    	} else if (thisChar === 'Z') {
-    		this.incrementOctave(-1)
+
+    		// should we make a sound?
+    		if (this.isNoteKeyPress(thisChar)) {
+    			let note = this.getNoteFromTextKey(thisChar)
+    			if (note) {
+    				this.Synth.triggerAttack(note)
+    				this.setState(prevState => ({
+    					notesRinging: [...prevState.notesRinging, note]
+    				}))
+    			}
+    		} else {
+    			if (thisChar === 'X') {
+    				this.incrementOctave(1)
+		    	} else if (thisChar === 'Z') {
+		    		this.incrementOctave(-1)
+		    	}
+    		}
     	} else {
     		// leave state as is
     	}
@@ -49,39 +87,117 @@ export default class KeyboardController extends Component {
 
   	handleKeyUp(e){
   		let thisChar = Constants.keyboardMap[e.keyCode]
+  		// remove this char from the state array
   		this.setState(prevState => ({
-  			keyPressed: this.state.keyPressed.filter((code) => code !== thisChar)
+  			keysPressed: this.state.keysPressed.filter((code) => code !== thisChar)
   		}))
-  	}
 
-  	incrementOctave(incr){
-  		if ((this.state.octave + incr) >= this.octaveMinMax[0]) {
-  			if ((this.state.octave + incr) <= this.octaveMinMax[1]) {
-  				this.setState(prevState => ({
-	    			octave: prevState.octave + incr
-	    		}))
-  			} else {
-  				this.setState(prevState => ({
-	    			octave: this.octaveMinMax[1]
-	    		}))
+  		if (this.isNoteKeyPress(thisChar)) {
+  			if (this.isSustaining()) {} 
+  			else {
+				let note = this.getNoteFromTextKey(thisChar)
+				if (note) {
+					this.Synth.triggerRelease(note)
+					this.setState(prevState => ({
+	  					notesRinging: this.state.notesRinging.filter((n) => n !== note)
+	  				}))
+				}
   			}
-  		} else {
-  			this.setState(prevState => ({
-    			octave: this.octaveMinMax[0]
-    		}))
+  		} else if (thisChar === ' ') {
+  			let notesToHold = this.state.keysPressed.map((k) => this.getNoteFromTextKey(k))
+  			for (let note of this.state.notesRinging){
+  				if (!notesToHold.includes(note)) {
+  					this.Synth.triggerRelease(note)
+	  				this.setState(prevState => ({
+	  					notesRinging: this.state.notesRinging.filter((n) => n !== note)
+	  				}))
+  				}
+  			}
   		}
   	}
 
-  	isValidKey(key){
-  		return Constants.textKeys[0].includes(key.toLowerCase()) || Constants.textKeys[1].includes(key.toLowerCase())
+	getNoteFromTextKey(textKey){
+		let naturals = Constants.noteNames.filter((note) => note.length <= 1)	// extract just the natural notes
+		// merge the first 2 keyboard rows into one array
+		let allTextKeys = Constants.textKeys[0].map((v,i) => [v, Constants.textKeys[1][i]] ).reduce((a,b) => a.concat(b));
+		let noteMap = allTextKeys.map((v) => 								// iterate over all the possible text keys
+			Constants.textKeys[1].includes(v)								// if the current value is in the second row
+			? naturals[Constants.textKeys[1].indexOf(v)%naturals.length] 	// set the note value to the corresponding natural note
+			: null															// otherwise set it to null (for now)
+		)
+		noteMap = noteMap.map((note,i) =>										// iterate over the map we just made
+			note 																// if the value is not null
+			? note 																// just return the value
+			: (																	// otherwise...
+				(noteMap[i+1] && noteMap[i+1] !== 'C' && noteMap[i+1] !== 'F') 	// if the natural note just sharp of this value isn't C or F
+				? noteMap[i+1] + 'b'											// then we return that note, flattened
+				: null															// otherwise the note does not exist
+			)
+		)
+		let keyIDX = allTextKeys.indexOf(textKey)
+		let note = noteMap[keyIDX] 											// now we get our note
+		let allTextKeysReduced = allTextKeys.filter((v,i) => noteMap[i] )	// remove null elements from allTextKeys array
+		let octave = parseInt(allTextKeysReduced.indexOf(textKey)/12, 10) + this.state.octave // get the desired octave
+		return note ? note + octave : null
+	}
+
+	incrementOctave(incr){
+		if ((this.state.octave + incr) >= this.octaveMinMax[0]) {
+			if ((this.state.octave + incr) <= this.octaveMinMax[1]) {
+				this.setState(prevState => ({
+					octave: prevState.octave + incr
+				}))
+			} else {
+				this.setState(prevState => ({
+					octave: this.octaveMinMax[1]
+				}))
+			}
+		} else {
+			this.setState(prevState => ({
+				octave: this.octaveMinMax[0]
+			}))
+		}
+	}
+
+  	isSustaining(){
+  		return this.state.keysPressed.includes(' ')
+  	}
+  	isNoteKeyPress(key){
+  		return Constants.textKeys[0].includes(key) || Constants.textKeys[1].includes(key)
+  	}
+  	isValidKeyPress(key){
+  		return this.isNoteKeyPress(key) || Constants.textKeys[2].includes(key)
   	}
 
+	render() {
+		return (
+			<div className="keyboard-container">
+				<UpperControls />
+				<KeyboardContainer 
+					numOctaves={this.numOctaves} 
+					octave={this.state.octave} 
+					keysPressed={this.state.keysPressed}
+				/>
+				<LowerControls
+					octave={this.state.octave}
+					keysPressed={this.state.keysPressed}
+				/>
+			</div>
+		)
+	}
+}
+
+// ============================== //
+// ===== KEYBOARD CONTAINER ===== //
+// ============================== //
+
+class KeyboardContainer extends Component {
 	setupKeyboardNotes(){
 		let keyboard = []
-		for (var i = 0; i < this.numOctaves * 12; i++) {
+		for (var i = 0; i < this.props.numOctaves * 12; i++) {
 			keyboard.push({
 				noteName: Constants.noteNames[i%12], 
-				octave: String( this.state.octave + parseInt(i/12, 10)),
+				octave: String( this.props.octave + parseInt(i/12, 10)),
 			})
 		}
 		return keyboard
@@ -90,14 +206,14 @@ export default class KeyboardController extends Component {
 	render() {
 		let keyboardNotes = this.setupKeyboardNotes()
 		let whiteKeys = keyboardNotes.filter((thisKey) => thisKey.noteName.length <= 1)
+		
 		// Every white key has a (flat) black key (except C & F)
 		let Keyboard = whiteKeys.map((thisKey, idx) => 
 			<KeyContainer 
 				note={thisKey.noteName} 
 				octave={thisKey.octave} 
 				index={idx} 
-				keyPressed={this.state.keyPressed}
-				Synth={this.Synth}
+				keysPressed={this.props.keysPressed}
 				key={thisKey.noteName + thisKey.octave}
 			/>
 		)
@@ -110,6 +226,10 @@ export default class KeyboardController extends Component {
 	}
 }
 
+// ============================== //
+// ======= KEY CONTAINER ======== //
+// ============================== //
+
 class KeyContainer extends Component {
 	hasAccidental(){
 		return this.props.note !== 'C' && this.props.note !== 'F'
@@ -121,16 +241,14 @@ class KeyContainer extends Component {
 						note={this.props.note} 
 						octave={this.props.octave} 
 						textKey={ Constants.textKeys[1][this.props.index]}
-						keyPressed={this.props.keyPressed}
-						Synth={this.props.Synth}
+						keysPressed={this.props.keysPressed}
 				/>
 				{this.hasAccidental() 
 					? <BlackKey 
 						note={`${this.props.note}b`} 
 						octave={this.props.octave} 
 						textKey={ Constants.textKeys[0][this.props.index]}
-						keyPressed={this.props.keyPressed}
-						Synth={this.props.Synth}
+						keysPressed={this.props.keysPressed}
 					/> 
 					: null
 				}
