@@ -11,11 +11,7 @@ import Constants from './constants.js'
 export default class KeyboardController extends Component {
 	constructor(){
 		super()
-		this.Synth = new Tone.PolySynth({
-			polyphony: 12,
-			volume: -12,
-			voice: Tone.Synth
-		})
+		this.Synth = new Tone.PolySynth() // we don't want to re-render every time this changes, only certain elements
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
 		this.octaveMinMax = [2, 7]
@@ -23,10 +19,21 @@ export default class KeyboardController extends Component {
 		this.handleKeyUp = this.handleKeyUp.bind(this)
 		this.incrementOctave = this.incrementOctave.bind(this)
 		this.getNoteFromTextKey = this.getNoteFromTextKey.bind(this)
+		this.setBend = this.setBend.bind(this)
+		this.setWaveform = this.setWaveform.bind(this)
+		this.setEnvelope = this.setEnvelope.bind(this)
 		this.state = {
 			keysPressed: [],
+			currentChord: [],
 			octave: 4,
-			notesRinging: []
+			bend: 0,
+			waveform: "sine",
+			envelope: {
+				attack: 0,
+				decay: 2.7,
+				sustain: 0.2,
+				release: 0.15
+			}
 		}
 	}
 
@@ -44,15 +51,13 @@ export default class KeyboardController extends Component {
 
 	setupSynth(){
 		this.Synth.set({
+			polyphony: 12,
+			volume: -12,
+			voice: Tone.Synth,
 			oscillator: {
-				type: "sine"
+				type: this.state.waveform
 			},
-			envelope: {
-				attack: 0,
-				decay: 2.7,
-				sustain: 0.2,
-				release: 0.15
-			}
+			envelope: this.state.envelope
 		})
 	}
 
@@ -68,17 +73,28 @@ export default class KeyboardController extends Component {
     		if (this.isNoteKeyPress(thisChar)) {
     			let note = this.getNoteFromTextKey(thisChar)
     			if (note) {
-    				this.Synth.triggerAttack(note)
+    				this.Synth.triggerAttack(note, '+0.01')
     				this.setState(prevState => ({
-    					notesRinging: [...prevState.notesRinging, note]
-    				}))
+						currentChord: [...prevState.currentChord, note]
+					}))
     			}
     		} else {
-    			if (thisChar === 'X') {
-    				this.incrementOctave(1)
-		    	} else if (thisChar === 'Z') {
-		    		this.incrementOctave(-1)
-		    	}
+    			switch(thisChar){
+    				case 'Z':
+	    				this.incrementOctave(-1)
+	    				break;
+	    			case 'X':
+						this.incrementOctave(1)
+						break;
+					case 'LEFT':
+						this.setBend(-20)
+						break;
+					case 'RIGHT':
+						this.setBend(20)
+						break;
+					default:
+						break;
+    			}
     		}
     	} else {
     		// leave state as is
@@ -91,29 +107,46 @@ export default class KeyboardController extends Component {
   		this.setState(prevState => ({
   			keysPressed: this.state.keysPressed.filter((code) => code !== thisChar)
   		}))
-
-  		if (this.isNoteKeyPress(thisChar)) {
-  			if (this.isSustaining()) {} 
-  			else {
-				let note = this.getNoteFromTextKey(thisChar)
-				if (note) {
-					this.Synth.triggerRelease(note)
-					this.setState(prevState => ({
-	  					notesRinging: this.state.notesRinging.filter((n) => n !== note)
-	  				}))
-				}
-  			}
-  		} else if (thisChar === ' ') {
-  			let notesToHold = this.state.keysPressed.map((k) => this.getNoteFromTextKey(k))
-  			for (let note of this.state.notesRinging){
-  				if (!notesToHold.includes(note)) {
-  					this.Synth.triggerRelease(note)
-	  				this.setState(prevState => ({
-	  					notesRinging: this.state.notesRinging.filter((n) => n !== note)
-	  				}))
-  				}
-  			}
-  		}
+  		if (this.isValidKeyPress(thisChar)) {
+	  		if (this.isNoteKeyPress(thisChar)) {
+	  			if (this.isSustaining()) {} 
+	  			else {
+					let note = this.getNoteFromTextKey(thisChar)
+					if (note) {
+						this.Synth.triggerRelease(note, "+0.01")
+						this.setState(prevState => ({
+		  					currentChord: this.state.currentChord.filter((n) => n !== note)
+		  				}))
+					}
+	  			}
+	  		} else {
+	  			switch(thisChar){
+	  				case ' ':
+	  					let notesToHold = this.state.keysPressed.map((k) => this.getNoteFromTextKey(k))
+			  			for (let note of this.state.currentChord){
+			  				if (!notesToHold.includes(note)) {
+			  					this.Synth.triggerRelease(note)
+				  				this.setState(prevState => ({
+				  					currentChord: this.state.currentChord.filter((n) => n !== note)
+				  				}))
+			  				}
+			  			}
+			  			break;
+			  		case 'LEFT':
+			  			if (!this.state.keysPressed.includes('RIGHT')) {
+			  				this.setBend(0)
+			  			}
+			  			break;
+			  		case 'RIGHT':
+			  			if (!this.state.keysPressed.includes('LEFT')) {
+			  				this.setBend(0)
+			  			}
+			  			break;
+			  		default:
+			  			break;
+	  			}
+	  		}
+	  	}
   	}
 
 	getNoteFromTextKey(textKey){
@@ -159,6 +192,51 @@ export default class KeyboardController extends Component {
 		}
 	}
 
+	setBend(bend){
+		this.setState(prevState => ({
+			bend: bend
+		}))
+		this.Synth.set({
+			detune: bend
+		})
+	}
+
+	setWaveform(type){
+		this.setState({
+			waveform: type
+		})
+		this.Synth.set({
+			oscillator: {
+				type: type
+			}
+		})
+	}
+
+	setEnvelope(A,D,S,R){
+		A = A || this.state.envelope.attack
+		D = D || this.state.envelope.decay
+		S = S || this.state.envelope.sustain
+		R = R || this.state.envelope.release
+
+		this.setState({
+			envelope: {
+				attack: A,
+				decay: D,
+				sustain: S,
+				release: R
+			}
+		})
+
+		this.Synth.set({
+			envelope: {
+				attack: A,
+				decay: D,
+				sustain: S,
+				release: R
+			}
+		})
+	}
+
   	isSustaining(){
   		return this.state.keysPressed.includes(' ')
   	}
@@ -172,7 +250,10 @@ export default class KeyboardController extends Component {
 	render() {
 		return (
 			<div className="keyboard-container">
-				<UpperControls />
+				<UpperControls 
+					waveform={this.state.waveform}
+					setWaveform={this.setWaveform}
+				/>
 				<KeyboardContainer 
 					numOctaves={this.numOctaves} 
 					octave={this.state.octave} 
@@ -180,6 +261,7 @@ export default class KeyboardController extends Component {
 				/>
 				<LowerControls
 					octave={this.state.octave}
+					bend={this.state.bend}
 					keysPressed={this.state.keysPressed}
 				/>
 			</div>

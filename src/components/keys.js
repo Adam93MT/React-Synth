@@ -22,19 +22,6 @@ export class PianoKey extends Component {
 		return {pressed: nextProps.keysPressed.includes(nextProps.textKey.toUpperCase())}
 	}
 
-	// componentDidUpdate(prevProps, prevState){
-	// 	if (this.isNoteKeyPress(this.props.textKey)) {
-	// 		if (this.state.pressed !== prevState.pressed) {
-	// 			if (this.state.pressed) {
-	// 				this.props.playNote(this.getFullNoteName())
-	// 			}
-	// 			else {
-	// 				this.props.releaseNote(this.getFullNoteName())
-	// 			}
-	// 		}
-	// 	}
-	// }
-
 	handleClickDown(){
 		this.setState({
 			pressed: true

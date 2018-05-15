@@ -1,16 +1,228 @@
+.yellow.lightest {
+  background-color: #FFECB5;
+  color: #111111; }
+.yellow.light {
+  background-color: #FED86E;
+  color: #111111; }
+.yellow.normal {
+  background-color: #FFB100;
+  color: #fafafa; }
+.yellow.dark {
+  background-color: #C66F00;
+  color: #fafafa; }
+.yellow.text-lightest {
+  color: #FFECB5; }
+.yellow.text-light {
+  color: #FED86E; }
+.yellow.text-normal {
+  color: #FFB100; }
+.yellow.text-dark {
+  color: #C66F00; }
+
+.orange.lightest {
+  background-color: #FFE2D4;
+  color: #111111; }
+.orange.light {
+  background-color: #FFA37C;
+  color: #111111; }
+.orange.normal {
+  background-color: #FF5F00;
+  color: #fafafa; }
+.orange.dark {
+  background-color: #E7390B;
+  color: #fafafa; }
+.orange.text-lightest {
+  color: #FFE2D4; }
+.orange.text-light {
+  color: #FFA37C; }
+.orange.text-normal {
+  color: #FF5F00; }
+.orange.text-dark {
+  color: #E7390B; }
+
+.red.lightest {
+  background-color: #FFD7E4;
+  color: #111111; }
+.red.light {
+  background-color: #FF92B1;
+  color: #111111; }
+.red.normal {
+  background-color: #FF0057;
+  color: #fafafa; }
+.red.dark {
+  background-color: #C80039;
+  color: #fafafa; }
+.red.text-lightest {
+  color: #FFD7E4; }
+.red.text-light {
+  color: #FF92B1; }
+.red.text-normal {
+  color: #FF0057; }
+.red.text-dark {
+  color: #C80039; }
+
+.pink.lightest {
+  background-color: #FFD5F3;
+  color: #111111; }
+.pink.light {
+  background-color: #FF90E0;
+  color: #111111; }
+.pink.normal {
+  background-color: #FF00C1;
+  color: #fafafa; }
+.pink.dark {
+  background-color: #C70080;
+  color: #fafafa; }
+.pink.text-lightest {
+  color: #FFD5F3; }
+.pink.text-light {
+  color: #FF90E0; }
+.pink.text-normal {
+  color: #FF00C1; }
+.pink.text-dark {
+  color: #C70080; }
+
+.purple.lightest {
+  background-color: #F0DEFD;
+  color: #111111; }
+.purple.light {
+  background-color: #D9A7FF;
+  color: #111111; }
+.purple.normal {
+  background-color: #A101F9;
+  color: #fafafa; }
+.purple.dark {
+  background-color: #7C00AF;
+  color: #fafafa; }
+.purple.text-lightest {
+  color: #F0DEFD; }
+.purple.text-light {
+  color: #D9A7FF; }
+.purple.text-normal {
+  color: #A101F9; }
+.purple.text-dark {
+  color: #7C00AF; }
+
+.blue.lightest {
+  background-color: #CFDDFF;
+  color: #111111; }
+.blue.light {
+  background-color: #99C4FE;
+  color: #111111; }
+.blue.normal {
+  background-color: #2879F4;
+  color: #fafafa; }
+.blue.dark {
+  background-color: #284CAC;
+  color: #fafafa; }
+.blue.text-lightest {
+  color: #CFDDFF; }
+.blue.text-light {
+  color: #99C4FE; }
+.blue.text-normal {
+  color: #2879F4; }
+.blue.text-dark {
+  color: #284CAC; }
+
+.cyan.lightest {
+  background-color: #C8F1FF;
+  color: #111111; }
+.cyan.light {
+  background-color: #5CD2F7;
+  color: #111111; }
+.cyan.normal {
+  background-color: #00BAFE;
+  color: #fafafa; }
+.cyan.dark {
+  background-color: #007598;
+  color: #fafafa; }
+.cyan.text-lightest {
+  color: #C8F1FF; }
+.cyan.text-light {
+  color: #5CD2F7; }
+.cyan.text-normal {
+  color: #00BAFE; }
+.cyan.text-dark {
+  color: #007598; }
+
+.teal.lightest {
+  background-color: #B0FAEA;
+  color: #111111; }
+.teal.light {
+  background-color: #39E3C7;
+  color: #111111; }
+.teal.normal {
+  background-color: #00DCD6;
+  color: #fafafa; }
+.teal.dark {
+  background-color: #008680;
+  color: #fafafa; }
+.teal.text-lightest {
+  color: #B0FAEA; }
+.teal.text-light {
+  color: #39E3C7; }
+.teal.text-normal {
+  color: #00DCD6; }
+.teal.text-dark {
+  color: #008680; }
+
+.green.lightest {
+  background-color: #C5FBC8;
+  color: #111111; }
+.green.light {
+  background-color: #6EE88B;
+  color: #111111; }
+.green.normal {
+  background-color: #00D545;
+  color: #fafafa; }
+.green.dark {
+  background-color: #00852B;
+  color: #fafafa; }
+.green.text-lightest {
+  color: #C5FBC8; }
+.green.text-light {
+  color: #6EE88B; }
+.green.text-normal {
+  color: #00D545; }
+.green.text-dark {
+  color: #00852B; }
+
+.grey.lightest {
+  background-color: #eeeeee;
+  color: #111111; }
+.grey.light {
+  background-color: #cccccc;
+  color: #111111; }
+.grey.normal {
+  background-color: #666666;
+  color: #fafafa; }
+.grey.dark {
+  background-color: #444444;
+  color: #fafafa; }
+.grey.text-lightest {
+  color: #eeeeee; }
+.grey.text-light {
+  color: #cccccc; }
+.grey.text-normal {
+  color: #666666; }
+.grey.text-dark {
+  color: #444444; }
+
 body {
   margin: 0;
-  font-family: -apple-system, "Roboto", sans-serif;
-  font-style: italic;
+  font-family: "Roboto", -apple-system, sans-serif;
   font-size: 14px; }
 
 .keyboard-container {
-  padding: 0 8px 32px 8px; }
+  z-index: auto;
+  background-color: #CFDDFF; }
   .keyboard-container .keyboard {
+    z-index: 1;
     display: flex;
     flex-direction: row;
     justify-content: space-evenly;
-    margin: auto-2px;
+    margin: auto 6px;
+    font-style: italic;
     user-select: none; }
     .keyboard-container .keyboard .key-container {
       flex-grow: 1;
@@ -23,6 +235,7 @@ body {
       align-items: center;
       justify-content: center; }
   .keyboard-container .key {
+    z-index: 1;
     flex-grow: 1;
     flex-basis: 0;
     text-align: center;
@@ -33,8 +246,10 @@ body {
     align-items: center;
     justify-content: center;
     cursor: pointer;
-    border-radius: 0 0 4px 4px; }
+    border-radius: 0 0 4px 4px;
+    font-style: italic; }
     .keyboard-container .key.white-key {
+      z-index: 1;
       position: relative;
       align-items: flex-end;
       color: #060606;
@@ -64,6 +279,7 @@ body {
       .keyboard-container .key.white-key .key-text {
         margin-bottom: 43px; }
     .keyboard-container .key.black-key {
+      z-index: 2;
       background: #151515;
       background: -moz-linear-gradient(to bottom right, #060606 0%, #151515 100%);
       background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #060606), color-stop(100%, #151515));
@@ -92,65 +308,128 @@ body {
         background: -o-linear-gradient(to bottom right, #151515 0%, #404040 100%);
         background: -ms-linear-gradient(to bottom right, #151515 0%, #404040 100%);
         background: linear-gradient(to bottom right, #151515 0%, #404040 100%); }
-  .keyboard-container .controls .ctrl-key {
+  .keyboard-container .controls .ctrl-container {
+    justify-items: center;
+    align-items: center; }
+    .keyboard-container .controls .ctrl-container .ctrl-label {
+      justify-self: stretch;
+      justify-content: center;
+      text-align: center;
+      font-weight: 500; }
+    .keyboard-container .controls .ctrl-container .ctrl-key {
+      margin: 8px;
+      position: relative;
+      color: #060606;
+      background: #F2F2F2;
+      background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
+      background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      -webkit-box-shadow: 0 2px 4px #060606;
+      -moz-box-shadow: 0 2px 4px #060606;
+      box-shadow: 0 2px 4px #060606;
+      border-radius: 4px;
+      justify-self: stretch; }
+      .keyboard-container .controls .ctrl-container .ctrl-key.pressed {
+        -webkit-box-shadow: 0 0 2px #060606;
+        -moz-box-shadow: 0 0 2px #060606;
+        box-shadow: 0 0 2px #060606;
+        background: #eaeaea;
+        background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #eaeaea));
+        background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+        background: linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%); }
+      .keyboard-container .controls .ctrl-container .ctrl-key .key-text {
+        padding: 32px 0; }
+      .keyboard-container .controls .ctrl-container .ctrl-key .control-command {
+        font-style: normal;
+        font-size: 16px;
+        color: #404040;
+        position: absolute;
+        top: 0;
+        margin: 8%; }
+  .keyboard-container .controls#upper-controls {
+    display: flex;
     position: relative;
-    color: #060606;
-    margin: 8px;
-    background: #F2F2F2;
-    background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
-    background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+    z-index: 5;
+    user-select: none;
+    padding: 16px 32px;
     -webkit-box-shadow: 0 2px 4px #060606;
     -moz-box-shadow: 0 2px 4px #060606;
-    box-shadow: 0 2px 4px #060606; }
-    .keyboard-container .controls .ctrl-key.pressed {
-      -webkit-box-shadow: 0 0 2px #060606;
-      -moz-box-shadow: 0 0 2px #060606;
-      box-shadow: 0 0 2px #060606;
-      background: #eaeaea;
-      background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #eaeaea));
-      background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%); }
-    .keyboard-container .controls .ctrl-key .control-command {
-      font-style: normal;
-      font-size: 16px;
-      color: #404040;
-      position: absolute;
-      top: 0;
-      margin: 8%; }
+    box-shadow: 0 2px 4px #060606;
+    background-color: #2879F4;
+    color: #fafafa; }
+    .keyboard-container .controls#upper-controls .ctrl-container {
+      padding: 16px 32px; }
+    .keyboard-container .controls#upper-controls #wave-controls {
+      display: inline-grid;
+      grid-template-columns: 48px 48px;
+      grid-template-rows: auto 48px 48px;
+      grid-gap: 4px; }
+      .keyboard-container .controls#upper-controls #wave-controls .ctrl-label {
+        grid-column: 1/3;
+        margin: 2px auto; }
+      .keyboard-container .controls#upper-controls #wave-controls .wave-key {
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        background: #DACCFF;
+        background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+        background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #DACCFF));
+        background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+        background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+        background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+        background: linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+        -webkit-box-shadow: 0 1px 3px #060606;
+        -moz-box-shadow: 0 1px 3px #060606;
+        box-shadow: 0 1px 3px #060606;
+        opacity: 0.6; }
+        .keyboard-container .controls#upper-controls #wave-controls .wave-key.selected, .keyboard-container .controls#upper-controls #wave-controls .wave-key:hover {
+          background: #F2F2F2;
+          background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+          background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
+          background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+          background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+          background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+          background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+          -webkit-box-shadow: 0 2px 4px #060606;
+          -moz-box-shadow: 0 2px 4px #060606;
+          box-shadow: 0 2px 4px #060606;
+          opacity: 1; }
+        .keyboard-container .controls#upper-controls #wave-controls .wave-key:active {
+          -webkit-box-shadow: 0 0px 2px #060606;
+          -moz-box-shadow: 0 0px 2px #060606;
+          box-shadow: 0 0px 2px #060606; }
+        .keyboard-container .controls#upper-controls #wave-controls .wave-key img {
+          padding: 8px; }
   .keyboard-container .controls#lower-controls {
-    display: flex;
-    margin: 12px 0; }
-    .keyboard-container .controls#lower-controls .ctrl-container {
-      margin: 0 6px; }
+    z-index: auto;
+    display: grid;
+    grid-template-columns: 3fr 5fr 3fr;
+    padding: 12px 0;
+    user-select: none; }
     .keyboard-container .controls#lower-controls #octave-controls {
-      flex-grow: 0;
-      width: 25%;
-      display: flex; }
-      .keyboard-container .controls#lower-controls #octave-controls .control-label {
-        padding: 8px;
-        flex-grow: 1; }
-      .keyboard-container .controls#lower-controls #octave-controls .octave-key {
-        flex-grow: 2; }
-        .keyboard-container .controls#lower-controls #octave-controls .octave-key .key-text {
-          padding: calc(50% - 1em) 0; }
+      grid-column: 1/1;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr; }
       .keyboard-container .controls#lower-controls #octave-controls #octave-down .control-command {
         right: 0; }
       .keyboard-container .controls#lower-controls #octave-controls #octave-up .control-command {
         left: 0; }
     .keyboard-container .controls#lower-controls #sustain-controls {
-      flex-grow: 0;
-      width: 50%; }
-      .keyboard-container .controls#lower-controls #sustain-controls .key-text {
-        padding: calc(7% - 1em) 0; }
+      grid-column: 2/2; }
       .keyboard-container .controls#lower-controls #sustain-controls .control-command {
         font-size: 14px;
         margin: 2% 0; }
+    .keyboard-container .controls#lower-controls #bend-controls {
+      grid-column: 3/3;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr; }
 
 /*# sourceMappingURL=SynthStyle.css.map */

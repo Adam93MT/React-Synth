@@ -8,21 +8,107 @@ import { PianoKey } from './keys.js'
 //
 */
 
-// ============================== //
-// ======= UPPER CONTROLS ======= //
-// ============================== //
+// ========================================================================================== //
+// ===================================== UPPER CONTROLS ===================================== //
+// ========================================================================================== //
 
 export class UpperControls extends Component {
 	render(){
 		return (
-			<div className="controls" id="upper-controls"></div>
+			<div className="controls" id="upper-controls">
+				<WaveFormControls
+					waveform={this.props.waveform}
+					setWaveform={this.props.setWaveform}
+				/>
+				<EnvelopeControls
+
+				/>
+			</div>
 		)
 	}
 }
 
-// ============================== //
-// ======= LOWER CONTROLS ======= //
-// ============================== //
+// ========== WAVE FORM ========== //
+
+class WaveFormControls extends Component {
+	render(){
+		return (
+			<div className="ctrl-container" id="wave-controls">
+				<span className="ctrl-label">WAVEFORM</span> 
+				<WaveFormButton
+					selectedWaveform={this.props.waveform}
+					setWaveform={this.props.setWaveform}
+					type="triangle"
+				/>
+				<WaveFormButton
+					selectedWaveform={this.props.waveform}
+					setWaveform={this.props.setWaveform}
+					type="square"
+				/>
+				<WaveFormButton
+					selectedWaveform={this.props.waveform}
+					setWaveform={this.props.setWaveform}
+					type="sine"
+				/>
+				<WaveFormButton
+					selectedWaveform={this.props.waveform}
+					setWaveform={this.props.setWaveform}
+					type="sawtooth"
+				/>
+			</div>
+		)
+	}
+}
+
+class WaveFormButton extends Component {
+
+	constructor(){
+		super()
+		this.handleClick = this.handleClick.bind(this)
+	}
+
+	handleClick(){
+		this.props.setWaveform(this.props.type)
+	}
+
+	render(){
+		return (
+			<div 
+				className={`ctrl-key wave-key ${this.props.selectedWaveform === this.props.type ? 'selected' : ''}`} 
+				id={`${this.props.type}-wave`}
+				onClick={this.handleClick}>
+					<img 
+						src={`./icons/${this.props.type}.png`}
+						alt={this.props.type}	
+					/>
+			</div>
+		)
+	}
+}
+
+// ========== ENVELOPE ========== //
+
+class EnvelopeControls extends Component {
+	render(){
+		return (
+			<div className="ctrl-container" id="envelope-controls">
+			</div>
+		)
+	}
+}
+
+class EnvelopeSlider extends Component {
+	render(){
+		return (
+			<div className="ctrl-slider" id={`${this.props.type}-slider`}>
+			</div>
+		)
+	}
+}
+
+// ========================================================================================== //
+// ===================================== LOWER CONTROLS ===================================== //
+// ========================================================================================== //
 
 export class LowerControls extends Component {
 	render(){
@@ -33,6 +119,10 @@ export class LowerControls extends Component {
 					keysPressed={this.props.keysPressed}
 				/>
 				<SustainControl 
+					keysPressed={this.props.keysPressed}
+				/>
+				<BendControl
+					bend={this.props.bend}
 					keysPressed={this.props.keysPressed}
 				/>
 			</div>
@@ -46,7 +136,7 @@ class OctaveControls extends Component {
 	render(){
 		return (
 			<div className="ctrl-container" id="octave-controls">
-				<span className="control-label">Octave: {this.props.octave}</span> 
+				<span className="ctrl-label">OCTAVE: {this.props.octave}</span> 
 				<OctaveKey
 					textKey={"z"}
 					direction={"down"}
@@ -90,6 +180,7 @@ class SustainControl extends Component {
 			<div className="ctrl-container" id="sustain-controls">
 				<SustainKey
 					textKey={" "}
+					displayKey={"␣"}
 					keysPressed={this.props.keysPressed}
 				/>
 			</div>
@@ -107,7 +198,7 @@ class SustainKey extends PianoKey {
 				onMouseUp={this.handleClickUp}
 				onMouseOut={this.handleClickUp}>
 					<div className="key-text">	
-						␣
+						{this.props.displayKey}
 					</div>
 					<div className="control-command">
 						Sustain
@@ -117,3 +208,42 @@ class SustainKey extends PianoKey {
 	}
 }
 
+// ========== BEND ========== //
+
+
+class BendControl extends Component {
+	render(){
+		return (
+			<div className="ctrl-container" id="bend-controls">
+				<span className="ctrl-label">PITCH BEND: {this.props.bend}</span> 
+				<BendKey
+					textKey={"LEFT"}
+					displayKey={"←"}
+					keysPressed={this.props.keysPressed}
+				/>
+				<BendKey
+					textKey={"RIGHT"}
+					displayKey={"→"}
+					keysPressed={this.props.keysPressed}
+				/>
+			</div>
+		)
+	}
+}
+
+class BendKey extends PianoKey {
+	render() {
+		return (
+			<div 
+				className={`ctrl-key key ${this.hasPressedClass()}`} 
+				id="bend-key"
+				onMouseDown={this.handleClickDown}
+				onMouseUp={this.handleClickUp}
+				onMouseOut={this.handleClickUp}>
+					<div className="key-text">	
+						{this.props.displayKey}
+					</div>
+			</div>
+		)
+	}
+}
