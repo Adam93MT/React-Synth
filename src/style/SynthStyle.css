@@ -252,7 +252,7 @@ body {
       z-index: 1;
       position: relative;
       align-items: flex-end;
-      color: #060606;
+      color: #111111;
       background: #F2F2F2;
       background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
       background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
@@ -262,13 +262,13 @@ body {
       background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
       margin: -1px 2px 0 2px;
       height: 250px;
-      -webkit-box-shadow: 0 2px 4px #060606;
-      -moz-box-shadow: 0 2px 4px #060606;
-      box-shadow: 0 2px 4px #060606; }
+      -webkit-box-shadow: 0 2px 4px #111111;
+      -moz-box-shadow: 0 2px 4px #111111;
+      box-shadow: 0 2px 4px #111111; }
       .keyboard-container .key.white-key.pressed {
-        -webkit-box-shadow: 0 0 2px #060606;
-        -moz-box-shadow: 0 0 2px #060606;
-        box-shadow: 0 0 2px #060606;
+        -webkit-box-shadow: 0 0 2px #111111;
+        -moz-box-shadow: 0 0 2px #111111;
+        box-shadow: 0 0 2px #111111;
         background: #eaeaea;
         background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
         background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #eaeaea));
@@ -281,12 +281,12 @@ body {
     .keyboard-container .key.black-key {
       z-index: 2;
       background: #151515;
-      background: -moz-linear-gradient(to bottom right, #060606 0%, #151515 100%);
-      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #060606), color-stop(100%, #151515));
-      background: -webkit-linear-gradient(to bottom right, #060606 0%, #151515 100%);
-      background: -o-linear-gradient(to bottom right, #060606 0%, #151515 100%);
-      background: -ms-linear-gradient(to bottom right, #060606 0%, #151515 100%);
-      background: linear-gradient(to bottom right, #060606 0%, #151515 100%);
+      background: -moz-linear-gradient(to bottom right, #111111 0%, #151515 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #111111), color-stop(100%, #151515));
+      background: -webkit-linear-gradient(to bottom right, #111111 0%, #151515 100%);
+      background: -o-linear-gradient(to bottom right, #111111 0%, #151515 100%);
+      background: -ms-linear-gradient(to bottom right, #111111 0%, #151515 100%);
+      background: linear-gradient(to bottom right, #111111 0%, #151515 100%);
       color: #fafafa;
       height: 150px;
       width: 50%;
@@ -294,13 +294,13 @@ body {
       top: 0;
       left: 0;
       transform: translateX(-50%);
-      -webkit-box-shadow: 0 3px 6px #060606;
-      -moz-box-shadow: 0 3px 6px #060606;
-      box-shadow: 0 3px 6px #060606; }
+      -webkit-box-shadow: 0 3px 6px #111111;
+      -moz-box-shadow: 0 3px 6px #111111;
+      box-shadow: 0 3px 6px #111111; }
       .keyboard-container .key.black-key.pressed {
-        -webkit-box-shadow: 0 0 2px #060606;
-        -moz-box-shadow: 0 0 2px #060606;
-        box-shadow: 0 0 2px #060606;
+        -webkit-box-shadow: 0 0 2px #111111;
+        -moz-box-shadow: 0 0 2px #111111;
+        box-shadow: 0 0 2px #111111;
         background: #404040;
         background: -moz-linear-gradient(to bottom right, #151515 0%, #404040 100%);
         background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #151515), color-stop(100%, #404040));
@@ -319,7 +319,7 @@ body {
     .keyboard-container .controls .ctrl-container .ctrl-key {
       margin: 8px;
       position: relative;
-      color: #060606;
+      color: #111111;
       background: #F2F2F2;
       background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
       background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
@@ -327,15 +327,15 @@ body {
       background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
       background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
       background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-      -webkit-box-shadow: 0 2px 4px #060606;
-      -moz-box-shadow: 0 2px 4px #060606;
-      box-shadow: 0 2px 4px #060606;
+      -webkit-box-shadow: 0 2px 4px #111111;
+      -moz-box-shadow: 0 2px 4px #111111;
+      box-shadow: 0 2px 4px #111111;
       border-radius: 4px;
       justify-self: stretch; }
       .keyboard-container .controls .ctrl-container .ctrl-key.pressed {
-        -webkit-box-shadow: 0 0 2px #060606;
-        -moz-box-shadow: 0 0 2px #060606;
-        box-shadow: 0 0 2px #060606;
+        -webkit-box-shadow: 0 0 2px #111111;
+        -moz-box-shadow: 0 0 2px #111111;
+        box-shadow: 0 0 2px #111111;
         background: #eaeaea;
         background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
         background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #eaeaea));
@@ -358,9 +358,9 @@ body {
     z-index: 5;
     user-select: none;
     padding: 16px 32px;
-    -webkit-box-shadow: 0 2px 4px #060606;
-    -moz-box-shadow: 0 2px 4px #060606;
-    box-shadow: 0 2px 4px #060606;
+    -webkit-box-shadow: 0 2px 4px #111111;
+    -moz-box-shadow: 0 2px 4px #111111;
+    box-shadow: 0 2px 4px #111111;
     background-color: #2879F4;
     color: #fafafa; }
     .keyboard-container .controls#upper-controls .ctrl-container {
@@ -386,9 +386,9 @@ body {
         background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
         background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
         background: linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
-        -webkit-box-shadow: 0 1px 3px #060606;
-        -moz-box-shadow: 0 1px 3px #060606;
-        box-shadow: 0 1px 3px #060606;
+        -webkit-box-shadow: 0 1px 3px #111111;
+        -moz-box-shadow: 0 1px 3px #111111;
+        box-shadow: 0 1px 3px #111111;
         opacity: 0.6; }
         .keyboard-container .controls#upper-controls #wave-controls .wave-key.selected, .keyboard-container .controls#upper-controls #wave-controls .wave-key:hover {
           background: #F2F2F2;
@@ -398,16 +398,24 @@ body {
           background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
           background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
           background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-          -webkit-box-shadow: 0 2px 4px #060606;
-          -moz-box-shadow: 0 2px 4px #060606;
-          box-shadow: 0 2px 4px #060606;
+          -webkit-box-shadow: 0 2px 4px #111111;
+          -moz-box-shadow: 0 2px 4px #111111;
+          box-shadow: 0 2px 4px #111111;
           opacity: 1; }
         .keyboard-container .controls#upper-controls #wave-controls .wave-key:active {
-          -webkit-box-shadow: 0 0px 2px #060606;
-          -moz-box-shadow: 0 0px 2px #060606;
-          box-shadow: 0 0px 2px #060606; }
+          -webkit-box-shadow: 0 0px 2px #111111;
+          -moz-box-shadow: 0 0px 2px #111111;
+          box-shadow: 0 0px 2px #111111; }
         .keyboard-container .controls#upper-controls #wave-controls .wave-key img {
           padding: 8px; }
+    .keyboard-container .controls#upper-controls #envelope-controls {
+      display: flex;
+      justify-content: center; }
+      .keyboard-container .controls#upper-controls #envelope-controls .ctrl-slider-container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0 6px; }
   .keyboard-container .controls#lower-controls {
     z-index: auto;
     display: grid;

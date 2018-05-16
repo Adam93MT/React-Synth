@@ -11,10 +11,14 @@ import Constants from './constants.js'
 export default class KeyboardController extends Component {
 	constructor(){
 		super()
+		// static
 		this.Synth = new Tone.PolySynth() // we don't want to re-render every time this changes, only certain elements
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
 		this.octaveMinMax = [2, 7]
+		this.noteDelayTime = "+0.05"
+
+		// functions
 		this.handleKeyDown = this.handleKeyDown.bind(this)
 		this.handleKeyUp = this.handleKeyUp.bind(this)
 		this.incrementOctave = this.incrementOctave.bind(this)
@@ -22,6 +26,8 @@ export default class KeyboardController extends Component {
 		this.setBend = this.setBend.bind(this)
 		this.setWaveform = this.setWaveform.bind(this)
 		this.setEnvelope = this.setEnvelope.bind(this)
+
+		// state
 		this.state = {
 			keysPressed: [],
 			currentChord: [],
@@ -73,7 +79,7 @@ export default class KeyboardController extends Component {
     		if (this.isNoteKeyPress(thisChar)) {
     			let note = this.getNoteFromTextKey(thisChar)
     			if (note) {
-    				this.Synth.triggerAttack(note, '+0.01')
+    				this.Synth.triggerAttack(note, this.noteDelayTime)
     				this.setState(prevState => ({
 						currentChord: [...prevState.currentChord, note]
 					}))
@@ -111,9 +117,12 @@ export default class KeyboardController extends Component {
 	  		if (this.isNoteKeyPress(thisChar)) {
 	  			if (this.isSustaining()) {} 
 	  			else {
+
+	  				// TODO: delay triggerRelease() until the attack portion of the note is completed
+
 					let note = this.getNoteFromTextKey(thisChar)
 					if (note) {
-						this.Synth.triggerRelease(note, "+0.01")
+						this.Synth.triggerRelease(note, this.noteDelayTime)
 						this.setState(prevState => ({
 		  					currentChord: this.state.currentChord.filter((n) => n !== note)
 		  				}))
@@ -212,27 +221,29 @@ export default class KeyboardController extends Component {
 		})
 	}
 
-	setEnvelope(A,D,S,R){
-		A = A || this.state.envelope.attack
-		D = D || this.state.envelope.decay
-		S = S || this.state.envelope.sustain
-		R = R || this.state.envelope.release
+	setEnvelope({attack, decay, sustain, release}){
+		attack = parseFloat(attack) || this.state.envelope.attack
+		decay = parseFloat(decay) || this.state.envelope.decay
+		sustain = parseFloat(sustain) || this.state.envelope.sustain
+		release = parseFloat(release) || this.state.envelope.release
+
+		console.log("setEnvelope", attack, decay, sustain, release)
 
 		this.setState({
 			envelope: {
-				attack: A,
-				decay: D,
-				sustain: S,
-				release: R
+				attack: attack,
+				decay: decay,
+				sustain: sustain,
+				release: release
 			}
 		})
 
 		this.Synth.set({
 			envelope: {
-				attack: A,
-				decay: D,
-				sustain: S,
-				release: R
+				attack: attack,
+				decay: decay,
+				sustain: sustain,
+				release: release
 			}
 		})
 	}
@@ -253,6 +264,8 @@ export default class KeyboardController extends Component {
 				<UpperControls 
 					waveform={this.state.waveform}
 					setWaveform={this.setWaveform}
+					envelope={this.state.envelope}
+					setEnvelope={this.setEnvelope}
 				/>
 				<KeyboardContainer 
 					numOctaves={this.numOctaves} 

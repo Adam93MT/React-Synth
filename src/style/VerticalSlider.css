@@ -1,0 +1,255 @@
+.yellow.lightest {
+  background-color: #FFECB5;
+  color: #111111; }
+.yellow.light {
+  background-color: #FED86E;
+  color: #111111; }
+.yellow.normal {
+  background-color: #FFB100;
+  color: #fafafa; }
+.yellow.dark {
+  background-color: #C66F00;
+  color: #fafafa; }
+.yellow.text-lightest {
+  color: #FFECB5; }
+.yellow.text-light {
+  color: #FED86E; }
+.yellow.text-normal {
+  color: #FFB100; }
+.yellow.text-dark {
+  color: #C66F00; }
+
+.orange.lightest {
+  background-color: #FFE2D4;
+  color: #111111; }
+.orange.light {
+  background-color: #FFA37C;
+  color: #111111; }
+.orange.normal {
+  background-color: #FF5F00;
+  color: #fafafa; }
+.orange.dark {
+  background-color: #E7390B;
+  color: #fafafa; }
+.orange.text-lightest {
+  color: #FFE2D4; }
+.orange.text-light {
+  color: #FFA37C; }
+.orange.text-normal {
+  color: #FF5F00; }
+.orange.text-dark {
+  color: #E7390B; }
+
+.red.lightest {
+  background-color: #FFD7E4;
+  color: #111111; }
+.red.light {
+  background-color: #FF92B1;
+  color: #111111; }
+.red.normal {
+  background-color: #FF0057;
+  color: #fafafa; }
+.red.dark {
+  background-color: #C80039;
+  color: #fafafa; }
+.red.text-lightest {
+  color: #FFD7E4; }
+.red.text-light {
+  color: #FF92B1; }
+.red.text-normal {
+  color: #FF0057; }
+.red.text-dark {
+  color: #C80039; }
+
+.pink.lightest {
+  background-color: #FFD5F3;
+  color: #111111; }
+.pink.light {
+  background-color: #FF90E0;
+  color: #111111; }
+.pink.normal {
+  background-color: #FF00C1;
+  color: #fafafa; }
+.pink.dark {
+  background-color: #C70080;
+  color: #fafafa; }
+.pink.text-lightest {
+  color: #FFD5F3; }
+.pink.text-light {
+  color: #FF90E0; }
+.pink.text-normal {
+  color: #FF00C1; }
+.pink.text-dark {
+  color: #C70080; }
+
+.purple.lightest {
+  background-color: #F0DEFD;
+  color: #111111; }
+.purple.light {
+  background-color: #D9A7FF;
+  color: #111111; }
+.purple.normal {
+  background-color: #A101F9;
+  color: #fafafa; }
+.purple.dark {
+  background-color: #7C00AF;
+  color: #fafafa; }
+.purple.text-lightest {
+  color: #F0DEFD; }
+.purple.text-light {
+  color: #D9A7FF; }
+.purple.text-normal {
+  color: #A101F9; }
+.purple.text-dark {
+  color: #7C00AF; }
+
+.blue.lightest {
+  background-color: #CFDDFF;
+  color: #111111; }
+.blue.light {
+  background-color: #99C4FE;
+  color: #111111; }
+.blue.normal {
+  background-color: #2879F4;
+  color: #fafafa; }
+.blue.dark {
+  background-color: #284CAC;
+  color: #fafafa; }
+.blue.text-lightest {
+  color: #CFDDFF; }
+.blue.text-light {
+  color: #99C4FE; }
+.blue.text-normal {
+  color: #2879F4; }
+.blue.text-dark {
+  color: #284CAC; }
+
+.cyan.lightest {
+  background-color: #C8F1FF;
+  color: #111111; }
+.cyan.light {
+  background-color: #5CD2F7;
+  color: #111111; }
+.cyan.normal {
+  background-color: #00BAFE;
+  color: #fafafa; }
+.cyan.dark {
+  background-color: #007598;
+  color: #fafafa; }
+.cyan.text-lightest {
+  color: #C8F1FF; }
+.cyan.text-light {
+  color: #5CD2F7; }
+.cyan.text-normal {
+  color: #00BAFE; }
+.cyan.text-dark {
+  color: #007598; }
+
+.teal.lightest {
+  background-color: #B0FAEA;
+  color: #111111; }
+.teal.light {
+  background-color: #39E3C7;
+  color: #111111; }
+.teal.normal {
+  background-color: #00DCD6;
+  color: #fafafa; }
+.teal.dark {
+  background-color: #008680;
+  color: #fafafa; }
+.teal.text-lightest {
+  color: #B0FAEA; }
+.teal.text-light {
+  color: #39E3C7; }
+.teal.text-normal {
+  color: #00DCD6; }
+.teal.text-dark {
+  color: #008680; }
+
+.green.lightest {
+  background-color: #C5FBC8;
+  color: #111111; }
+.green.light {
+  background-color: #6EE88B;
+  color: #111111; }
+.green.normal {
+  background-color: #00D545;
+  color: #fafafa; }
+.green.dark {
+  background-color: #00852B;
+  color: #fafafa; }
+.green.text-lightest {
+  color: #C5FBC8; }
+.green.text-light {
+  color: #6EE88B; }
+.green.text-normal {
+  color: #00D545; }
+.green.text-dark {
+  color: #00852B; }
+
+.grey.lightest {
+  background-color: #eeeeee;
+  color: #111111; }
+.grey.light {
+  background-color: #cccccc;
+  color: #111111; }
+.grey.normal {
+  background-color: #666666;
+  color: #fafafa; }
+.grey.dark {
+  background-color: #444444;
+  color: #fafafa; }
+.grey.text-lightest {
+  color: #eeeeee; }
+.grey.text-light {
+  color: #cccccc; }
+.grey.text-normal {
+  color: #666666; }
+.grey.text-dark {
+  color: #444444; }
+
+.vertical-slider {
+  position: relative;
+  height: 100px;
+  width: 2px;
+  transform: translateX(-1px);
+  margin: 8px 24px;
+  background-color: #284CAC; }
+  .vertical-slider .min-track {
+    z-index: 0;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    background-color: #111111;
+    opacity: 0.7; }
+  .vertical-slider .slider-thumb {
+    z-index: 1;
+    position: absolute;
+    width: 24px;
+    height: 16px;
+    background: #F2F2F2;
+    background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+    background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
+    background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+    background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+    background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+    background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+    -webkit-box-shadow: 0 2px 4px #111111;
+    -moz-box-shadow: 0 2px 4px #111111;
+    box-shadow: 0 2px 4px #111111;
+    border-radius: 4px;
+    transform: translateX(-50%) translateX(1px) translateY(50%);
+    cursor: pointer; }
+    .vertical-slider .slider-thumb:active {
+      -webkit-box-shadow: 0 0 2px #111111;
+      -moz-box-shadow: 0 0 2px #111111;
+      box-shadow: 0 0 2px #111111;
+      background: #eaeaea;
+      background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #eaeaea));
+      background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+      background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+      background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
+      background: linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%); }
+
+/*# sourceMappingURL=VerticalSlider.css.map */

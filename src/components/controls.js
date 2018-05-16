@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { PianoKey } from './keys.js'
+import VerticalSlider from './VerticalSlider.js'
 
 /* Note about controls:
 // Control components that represent a key stroke (ex. Octave & Sustain) do not AFFECT the state of the synth.
@@ -21,7 +22,8 @@ export class UpperControls extends Component {
 					setWaveform={this.props.setWaveform}
 				/>
 				<EnvelopeControls
-
+					envelope={this.props.envelope}
+					setEnvelope={this.props.setEnvelope}
 				/>
 			</div>
 		)
@@ -92,19 +94,84 @@ class EnvelopeControls extends Component {
 	render(){
 		return (
 			<div className="ctrl-container" id="envelope-controls">
+				<EnvelopeSlider
+					type="attack"
+					setEnvelope={this.props.setEnvelope}
+					value={this.props.envelope.attack}
+					maxValue="2"
+				/>
+				<EnvelopeSlider
+					type="decay"
+					setEnvelope={this.props.setEnvelope}
+					value={this.props.envelope.decay}
+					maxValue="10"
+				/>
+				<EnvelopeSlider
+					type="sustain"
+					setEnvelope={this.props.setEnvelope}
+					value={this.props.envelope.sustain}
+					maxValue="1"
+				/>
+				<EnvelopeSlider
+					type="release"
+					setEnvelope={this.props.setEnvelope}
+					value={this.props.envelope.release}
+					maxValue="5"
+				/>
 			</div>
 		)
 	}
 }
 
 class EnvelopeSlider extends Component {
+	constructor(props){
+		super(props)
+		this.handleSlide = this.handleSlide.bind(this)
+		this.state = {
+			value: props.value
+		}
+	}
+
+
+	handleSlide(newValue){
+		let newEnvelope = {}
+		newEnvelope[this.props.type] = newValue
+		this.props.setEnvelope(newEnvelope)
+		this.setState({
+			value: newValue
+		})
+		console.log(newValue)
+	}
+
 	render(){
 		return (
-			<div className="ctrl-slider" id={`${this.props.type}-slider`}>
+			<div className="ctrl-slider-container" id={`${this.props.type}-slider-container`}>
+				<span className="ctrl-label">{this.props.type.toUpperCase()}</span> 
+				<VerticalSlider
+					className="ctrl-slider"
+					id={`${this.props.type}-slider`}
+					min="0"
+					max={this.props.maxValue}
+					value={this.state.value}
+					accuracy={10}
+					onChange={this.handleSlide}
+				/>
+				<span className="ctrl-label">{this.state.value}</span> 
 			</div>
 		)
 	}
 }
+/*
+<input 
+	className="vertical-slider"
+	type="range" 
+	orient="vertical"
+	min="0" 
+	max={this.props.maxValue} 
+	value={this.state.value}
+	step={this.props.maxValue/100}
+	onChange={this.handleSlide}
+/> */
 
 // ========================================================================================== //
 // ===================================== LOWER CONTROLS ===================================== //
