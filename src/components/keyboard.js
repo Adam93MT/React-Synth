@@ -60,7 +60,7 @@ export default class KeyboardController extends Component {
 
 	setupSynth(){
 		this.Synth.set({
-			polyphony: 12,
+			polyphony: 8,
 			volume: -12,
 			voice: Tone.Synth,
 			oscillator: {
@@ -73,6 +73,7 @@ export default class KeyboardController extends Component {
 	handleKeyDown(e){
 		let thisChar = Constants.keyboardMap[e.keyCode]
     	if (this.isValidKeyPress(thisChar) && !this.state.keysPressed.includes(thisChar)) {
+
     		// add to keysPressed Array
     		this.setState(prevState => ({
     			keysPressed: [...prevState.keysPressed, thisChar]
@@ -82,7 +83,14 @@ export default class KeyboardController extends Component {
     		if (this.isNoteKeyPress(thisChar)) {
     			let note = this.getNoteFromTextKey(thisChar)
     			if (note) {
-    				this.triggerAttack(note)
+					if (this.Synth._context.state !== 'running') {
+						this.Synth._context.resume().then(() => {
+							console.log("Resuming Audio Context")
+							this.triggerAttack(note)
+						})
+					} else {
+						this.triggerAttack(note)
+					}
     			}
     		} else {
     			switch(thisChar){
