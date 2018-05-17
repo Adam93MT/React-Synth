@@ -16,7 +16,8 @@ export default class KeyboardController extends Component {
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
 		this.octaveMinMax = [2, 7]
-		this.noteDelayTime = "+0.05"
+		this.noteDelayTime = 0.01
+		this.releaseTimers = []
 
 		// functions
 		this.handleKeyDown = this.handleKeyDown.bind(this)
@@ -26,6 +27,8 @@ export default class KeyboardController extends Component {
 		this.setBend = this.setBend.bind(this)
 		this.setWaveform = this.setWaveform.bind(this)
 		this.setEnvelope = this.setEnvelope.bind(this)
+		this.triggerAttack = this.triggerAttack.bind(this)
+		this.triggerRelease = this.triggerRelease.bind(this)
 
 		// state
 		this.state = {
@@ -79,10 +82,7 @@ export default class KeyboardController extends Component {
     		if (this.isNoteKeyPress(thisChar)) {
     			let note = this.getNoteFromTextKey(thisChar)
     			if (note) {
-    				this.Synth.triggerAttack(note, this.noteDelayTime)
-    				this.setState(prevState => ({
-						currentChord: [...prevState.currentChord, note]
-					}))
+    				this.triggerAttack(note)
     			}
     		} else {
     			switch(thisChar){
@@ -113,31 +113,29 @@ export default class KeyboardController extends Component {
   		this.setState(prevState => ({
   			keysPressed: this.state.keysPressed.filter((code) => code !== thisChar)
   		}))
+
+  		//
+  		// TODO : Press key -> change octave -> release key does not release the note
+  		//
+  		
   		if (this.isValidKeyPress(thisChar)) {
 	  		if (this.isNoteKeyPress(thisChar)) {
 	  			if (this.isSustaining()) {} 
 	  			else {
-
-	  				// TODO: delay triggerRelease() until the attack portion of the note is completed
-
 					let note = this.getNoteFromTextKey(thisChar)
 					if (note) {
-						this.Synth.triggerRelease(note, this.noteDelayTime)
-						this.setState(prevState => ({
-		  					currentChord: this.state.currentChord.filter((n) => n !== note)
-		  				}))
+						this.triggerRelease(note)	
 					}
 	  			}
 	  		} else {
 	  			switch(thisChar){
 	  				case ' ':
 	  					let notesToHold = this.state.keysPressed.map((k) => this.getNoteFromTextKey(k))
+	  					// remove all notes from the current chord when user releases spacebar
 			  			for (let note of this.state.currentChord){
+			  				note = note.note
 			  				if (!notesToHold.includes(note)) {
-			  					this.Synth.triggerRelease(note)
-				  				this.setState(prevState => ({
-				  					currentChord: this.state.currentChord.filter((n) => n !== note)
-				  				}))
+			  					this.triggerRelease(note)
 			  				}
 			  			}
 			  			break;
@@ -181,6 +179,49 @@ export default class KeyboardController extends Component {
 		let allTextKeysReduced = allTextKeys.filter((v,i) => noteMap[i] )	// remove null elements from allTextKeys array
 		let octave = parseInt(allTextKeysReduced.indexOf(textKey)/12, 10) + this.state.octave // get the desired octave
 		return note ? note + octave : null
+	}
+
+	triggerAttack(note){
+		this.Synth.triggerAttack(note, `+${this.noteDelayTime}`)
+		let attackTime = Tone.now()
+
+		// if the note we're going to play is currently ringing, we just reset the attack time in state
+		let noteInChord = this.state.currentChord.find((n) => n.note === note)
+		if (noteInChord){
+			let noteIDX = this.state.currentChord.indexOf(noteInChord)
+			let newChord = this.state.currentChord.slice()
+			newChord[noteIDX] = {note: noteInChord.note, attackTime: attackTime}
+
+			this.setState(prevState => ({
+				currentChord: newChord
+			}))
+
+		} 
+		// otherwise, add it to the state array 
+		else {
+			this.setState(prevState => ({
+				currentChord: [...prevState.currentChord, {note: note, attackTime: attackTime}]
+			}))
+		}
+	}
+
+	triggerRelease(note){
+		if (this.state.currentChord.find((n) => n.note === note)) {
+			let currentTime = Tone.now()
+			let noteInfo = this.state.currentChord.filter((n) => n.note === note)[0]
+			let noteAttackTime = noteInfo.attackTime ? noteInfo.attackTime : 0
+			let timeSinceAttack = currentTime - noteAttackTime
+			let envelopeAttack = this.Synth.get("envelope.attack").envelope.attack
+			let delayReleaseTime = timeSinceAttack < envelopeAttack ? (envelopeAttack - timeSinceAttack) + 0.1 : 0.1
+
+			console.log(currentTime, noteAttackTime, timeSinceAttack, envelopeAttack)
+			console.log(note, "delayRelease", delayReleaseTime)
+
+			this.Synth.triggerRelease(note, `+${delayReleaseTime}`)
+			this.setState(prevState => ({
+				currentChord: this.state.currentChord.filter((n) => n.note !== note)
+			}))
+		}
 	}
 
 	incrementOctave(incr){

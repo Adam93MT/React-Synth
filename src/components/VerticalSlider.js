@@ -15,6 +15,10 @@ export default class VerticalSlider extends Component {
 		this.handleClick = this.handleClick.bind(this)
 		this.handleDrag = this.handleDrag.bind(this)
 		this.handleRelease = this.handleRelease.bind(this)
+		this.handleFocus = this.handleFocus.bind(this)
+		this.handleBlur = this.handleBlur.bind(this)
+		this.handleKeyDown = this.handleKeyDown.bind(this)
+		this.roundToAccuracy = this.roundToAccuracy.bind(this)
 	}
 
 
@@ -55,9 +59,7 @@ export default class VerticalSlider extends Component {
 			let valueDiff = pctChange * parseFloat(this.props.max - this.props.min)
 			let newValue = this.limitToRange(this.initialValue + valueDiff, parseFloat(this.props.min), parseFloat(this.props.max))
 			
-			if (this.props.accuracy) {
-				newValue = Math.round(newValue*this.props.accuracy)/this.props.accuracy
-			}
+			newValue = this.roundToAccuracy(newValue)
 			// console.log(pageY, yDiff, pctChange, valueDiff, newValue)
 			this.setState({
 				value: newValue
@@ -78,6 +80,31 @@ export default class VerticalSlider extends Component {
     	e.preventDefault()
 	}
 
+	handleFocus(e){
+		document.addEventListener('keydown', this.handleKeyDown)
+	}
+	handleBlur(e){
+		document.removeEventListener('keydown', this.handleKeyDown)
+	}
+
+	handleKeyDown(e){
+		let keydown = e.key
+		let increment = this.props.accuracy ? 1/this.props.accuracy : 0.01
+		let newValue = 0
+		if (keydown === "ArrowUp") {
+			newValue = this.limitToRange(this.state.value + increment, this.props.min, this.props.max)
+		} else if (keydown === "ArrowDown") {
+			newValue = this.limitToRange(this.state.value - increment, this.props.min, this.props.max)
+		} else return
+
+		newValue = this.roundToAccuracy(newValue)
+		this.setState({
+			value: newValue
+		})
+		this.props.onChange(newValue)
+	}
+
+
 	limitToRange(val, min, max){
 		if (val >= min) {
 			if (val <= max) {
@@ -88,6 +115,13 @@ export default class VerticalSlider extends Component {
 		} else {
 			return min
 		}
+	}
+
+	roundToAccuracy(number){
+		if (this.props.accuracy) {
+			return Math.round(number*this.props.accuracy)/this.props.accuracy
+		}
+		else {return number}
 	}
 
 	render(){
@@ -103,8 +137,9 @@ export default class VerticalSlider extends Component {
 					className="slider-thumb"
 					style={{bottom: pct+'%'}} 
 					onMouseDown={this.handleClick} 
-					// onMouseMove={this.handleDrag} 
-					// onMouseUp={this.handleRelease} 
+					onFocus={this.handleFocus}
+					onBlur={this.handleBlur}
+					tabIndex="0"
 				></span>
 			</div>
 		)

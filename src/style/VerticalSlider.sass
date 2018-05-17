@@ -7,10 +7,10 @@ $thumb-height: 16px
 
 .vertical-slider
 	position: relative
-	height: 100px
+	height: 56px
 	width: $track-width
 	transform: translateX(-$track-width/2)
-	margin: $thumb-height/2 $thumb-width
+	margin: $thumb-height $thumb-width $thumb-height $thumb-width
 
 	background-color: $blue-dark
 
@@ -34,6 +34,6 @@ $thumb-height: 16px
 		transform: translateX(-50%) translateX($track-width/2) translateY(50%)
 		cursor: pointer
 
-		&:active
+		&:active, &:focus
 			+box-shadow(0, 0, 2px, $black)
 			+CornerToCornerGradient($off-white, $light-grey)

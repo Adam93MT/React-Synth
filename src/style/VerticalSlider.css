@@ -210,10 +210,10 @@
 
 .vertical-slider {
   position: relative;
-  height: 100px;
+  height: 56px;
   width: 2px;
   transform: translateX(-1px);
-  margin: 8px 24px;
+  margin: 16px 24px 16px 24px;
   background-color: #284CAC; }
   .vertical-slider .min-track {
     z-index: 0;
@@ -240,7 +240,7 @@
     border-radius: 4px;
     transform: translateX(-50%) translateX(1px) translateY(50%);
     cursor: pointer; }
-    .vertical-slider .slider-thumb:active {
+    .vertical-slider .slider-thumb:active, .vertical-slider .slider-thumb:focus {
       -webkit-box-shadow: 0 0 2px #111111;
       -moz-box-shadow: 0 0 2px #111111;
       box-shadow: 0 0 2px #111111;
