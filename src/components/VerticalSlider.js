@@ -80,6 +80,7 @@ export default class VerticalSlider extends Component {
     	e.preventDefault()
 	}
 
+	// --- Accessibility --- //
 	handleFocus(e){
 		document.addEventListener('keydown', this.handleKeyDown)
 	}
@@ -103,7 +104,7 @@ export default class VerticalSlider extends Component {
 		})
 		this.props.onChange(newValue)
 	}
-
+	// -------------------- //
 
 	limitToRange(val, min, max){
 		if (val >= min) {
