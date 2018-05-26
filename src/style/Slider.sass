@@ -1,0 +1,37 @@
+@import 'functions'
+@import 'colors'
+
+$track-width: 2px
+$thumb-width: 24px
+$thumb-height: 16px
+
+.slider
+	position: relative
+	background-color: $blue-dark
+
+	.min-track
+		z-index: 0
+		width: 100%
+		position: absolute
+		background-color: $black
+		opacity: 0.7
+
+	.slider-thumb
+		z-index: 1
+		position: absolute
+		+CornerToCornerGradient($white, $off-white)
+		+box-shadow(0, 2px, 4px, $black)
+		border-radius: 4px
+		cursor: pointer
+
+		&:active, &:focus
+			+box-shadow(0, 0, 2px, $black)
+			+CornerToCornerGradient($off-white, $light-grey)
+
+.vertical-slider
+	.min-track
+		bottom: 0
+
+.horizontal-slider
+	.min-track
+		left: 0
