@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Tone from 'tone'
 import { WhiteKey, BlackKey } from './keys.js'
-import { UpperControls, LowerControls } from './controls.js'
+import { UpperControls } from './upper-controls.js'
+import { LowerControls } from './lower-controls.js'
 import Constants from './constants.js'
 
 // =============================== //
@@ -27,6 +28,8 @@ export default class KeyboardController extends Component {
 		this.setBend = this.setBend.bind(this)
 		this.setWaveform = this.setWaveform.bind(this)
 		this.setEnvelope = this.setEnvelope.bind(this)
+		this.setFilterType = this.setFilterType.bind(this)
+		this.setFilterParams = this.setFilterParams.bind(this)
 		this.triggerAttack = this.triggerAttack.bind(this)
 		this.triggerRelease = this.triggerRelease.bind(this)
 
@@ -42,6 +45,13 @@ export default class KeyboardController extends Component {
 				decay: 2.7,
 				sustain: 0.2,
 				release: 0.15
+			},
+			filter: {
+				type: "lowpass",
+				rolloff: -12,
+				frequency: 440,
+				Q: 1,
+				gain: 0
 			}
 		}
 	}
@@ -297,6 +307,31 @@ export default class KeyboardController extends Component {
 		})
 	}
 
+	setFilterType(type){
+		console.log(type)
+		console.log(this.state.filter)
+		this.setState(prevState => ({
+			filter: {
+				type: type,
+				frequency: prevState.filter.frequency,
+				rolloff: prevState.filter.rolloff,
+				Q: prevState.filter.Q
+			}
+		}))
+	}
+
+	setFilterParams({frequency, rolloff, Q}){
+
+		this.setState(prevState => ({
+			filter: {
+				type: prevState.filter.type,
+				frequency: frequency,
+				rolloff: rolloff,
+				Q: Q
+			}
+		}))
+	}
+
   	isSustaining(){
   		return this.state.keysPressed.includes(' ')
   	}
@@ -315,6 +350,9 @@ export default class KeyboardController extends Component {
 					setWaveform={this.setWaveform}
 					envelope={this.state.envelope}
 					setEnvelope={this.setEnvelope}
+					filter={this.state.filter}
+					setFilterType={this.setFilterType}
+					setFilterParams={this.setFilterParams}
 				/>
 				<KeyboardContainer 
 					numOctaves={this.numOctaves} 

@@ -316,7 +316,7 @@ body {
       justify-content: center;
       text-align: center;
       font-weight: 500; }
-    .keyboard-container .controls .ctrl-container .ctrl-key {
+    .keyboard-container .controls .ctrl-container .ctrl-button, .keyboard-container .controls .ctrl-container .ctrl-key {
       margin: 8px;
       position: relative;
       color: #111111;
@@ -331,8 +331,9 @@ body {
       -moz-box-shadow: 0 2px 4px #111111;
       box-shadow: 0 2px 4px #111111;
       border-radius: 4px;
-      justify-self: stretch; }
-      .keyboard-container .controls .ctrl-container .ctrl-key.pressed {
+      justify-self: stretch;
+      cursor: pointer; }
+      .keyboard-container .controls .ctrl-container .ctrl-button.pressed, .keyboard-container .controls .ctrl-container .ctrl-key.pressed {
         -webkit-box-shadow: 0 0 2px #111111;
         -moz-box-shadow: 0 0 2px #111111;
         box-shadow: 0 0 2px #111111;
@@ -343,15 +344,57 @@ body {
         background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
         background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
         background: linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%); }
-      .keyboard-container .controls .ctrl-container .ctrl-key .key-text {
+      .keyboard-container .controls .ctrl-container .ctrl-button.selected, .keyboard-container .controls .ctrl-container .ctrl-button:hover, .keyboard-container .controls .ctrl-container .ctrl-key.selected, .keyboard-container .controls .ctrl-container .ctrl-key:hover {
+        background: #F2F2F2;
+        background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+        background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
+        background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+        background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+        background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+        background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+        -webkit-box-shadow: 0 2px 4px #111111;
+        -moz-box-shadow: 0 2px 4px #111111;
+        box-shadow: 0 2px 4px #111111;
+        opacity: 1; }
+      .keyboard-container .controls .ctrl-container .ctrl-button:active, .keyboard-container .controls .ctrl-container .ctrl-key:active {
+        -webkit-box-shadow: 0 0px 2px #111111;
+        -moz-box-shadow: 0 0px 2px #111111;
+        box-shadow: 0 0px 2px #111111; }
+      .keyboard-container .controls .ctrl-container .ctrl-button .key-text, .keyboard-container .controls .ctrl-container .ctrl-key .key-text {
         padding: 32px 0; }
-      .keyboard-container .controls .ctrl-container .ctrl-key .control-command {
+      .keyboard-container .controls .ctrl-container .ctrl-button .control-command, .keyboard-container .controls .ctrl-container .ctrl-key .control-command {
         font-style: normal;
         font-size: 16px;
         color: #404040;
         position: absolute;
         top: 0;
         margin: 8%; }
+    .keyboard-container .controls .ctrl-container .ctrl-key {
+      background: #F2F2F2;
+      background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
+      background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
+      -webkit-box-shadow: 0 2px 4px #111111;
+      -moz-box-shadow: 0 2px 4px #111111;
+      box-shadow: 0 2px 4px #111111; }
+    .keyboard-container .controls .ctrl-container .ctrl-button {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #DACCFF;
+      background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #DACCFF));
+      background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+      background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+      background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+      background: linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
+      -webkit-box-shadow: 0 1px 3px #111111;
+      -moz-box-shadow: 0 1px 3px #111111;
+      box-shadow: 0 1px 3px #111111;
+      opacity: 0.6; }
   .keyboard-container .controls#upper-controls {
     display: flex;
     position: relative;
@@ -362,7 +405,9 @@ body {
     -moz-box-shadow: 0 2px 4px #111111;
     box-shadow: 0 2px 4px #111111;
     background-color: #2879F4;
-    color: #fafafa; }
+    color: #fafafa;
+    max-width: 100%;
+    max-width: 100vw; }
     .keyboard-container .controls#upper-controls .ctrl-container {
       padding: 16px 32px; }
     .keyboard-container .controls#upper-controls #wave-controls {
@@ -373,40 +418,9 @@ body {
       .keyboard-container .controls#upper-controls #wave-controls .ctrl-label {
         grid-column: 1/3;
         margin: 2px auto; }
-      .keyboard-container .controls#upper-controls #wave-controls .wave-key {
-        margin: 0;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        cursor: pointer;
-        background: #DACCFF;
-        background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
-        background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #DACCFF));
-        background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
-        background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
-        background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
-        background: linear-gradient(to bottom right, #F2F2F2 0%, #DACCFF 100%);
-        -webkit-box-shadow: 0 1px 3px #111111;
-        -moz-box-shadow: 0 1px 3px #111111;
-        box-shadow: 0 1px 3px #111111;
-        opacity: 0.6; }
-        .keyboard-container .controls#upper-controls #wave-controls .wave-key.selected, .keyboard-container .controls#upper-controls #wave-controls .wave-key:hover {
-          background: #F2F2F2;
-          background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-          background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
-          background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-          background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-          background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-          background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-          -webkit-box-shadow: 0 2px 4px #111111;
-          -moz-box-shadow: 0 2px 4px #111111;
-          box-shadow: 0 2px 4px #111111;
-          opacity: 1; }
-        .keyboard-container .controls#upper-controls #wave-controls .wave-key:active {
-          -webkit-box-shadow: 0 0px 2px #111111;
-          -moz-box-shadow: 0 0px 2px #111111;
-          box-shadow: 0 0px 2px #111111; }
-        .keyboard-container .controls#upper-controls #wave-controls .wave-key img {
+      .keyboard-container .controls#upper-controls #wave-controls .wave-button {
+        margin: 0; }
+        .keyboard-container .controls#upper-controls #wave-controls .wave-button img {
           padding: 8px; }
     .keyboard-container .controls#upper-controls #envelope-controls {
       display: flex;
@@ -416,6 +430,17 @@ body {
         flex-direction: column;
         align-items: center;
         padding: 0 6px; }
+    .keyboard-container .controls#upper-controls #filter-controls #filter-type-select {
+      display: flex; }
+      .keyboard-container .controls#upper-controls #filter-controls #filter-type-select .filter-button {
+        margin: 2px; }
+        .keyboard-container .controls#upper-controls #filter-controls #filter-type-select .filter-button img {
+          max-width: 20px;
+          padding: 4px; }
+    .keyboard-container .controls#upper-controls #filter-controls canvas {
+      background-color: rgba(255, 255, 255, 0.6);
+      padding: 2px;
+      margin: 8px 0; }
   .keyboard-container .controls#lower-controls {
     z-index: auto;
     display: grid;
