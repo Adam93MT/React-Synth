@@ -21,6 +21,7 @@ export default class KeyboardController extends Component {
 		this.releaseTimers = []
 
 		// functions
+		this.setupSynth = this.setupSynth.bind(this)
 		this.handleKeyDown = this.handleKeyDown.bind(this)
 		this.handleKeyUp = this.handleKeyUp.bind(this)
 		this.incrementOctave = this.incrementOctave.bind(this)
@@ -50,7 +51,7 @@ export default class KeyboardController extends Component {
 				type: "lowpass",
 				rolloff: -12,
 				frequency: 440,
-				Q: 1,
+				Q: 0,
 				gain: 0
 			}
 		}
@@ -71,13 +72,15 @@ export default class KeyboardController extends Component {
 	setupSynth(){
 		this.Synth.set({
 			polyphony: 8,
-			volume: -12,
+			volume: -1,
 			voice: Tone.Synth,
 			oscillator: {
 				type: this.state.waveform
 			},
 			envelope: this.state.envelope
 		})
+
+		console.log("Envelope:", this.Synth.get("envelope"))
 	}
 
 	handleKeyDown(e){
@@ -93,8 +96,8 @@ export default class KeyboardController extends Component {
     		if (this.isNoteKeyPress(thisChar)) {
     			let note = this.getNoteFromTextKey(thisChar)
     			if (note) {
-					if (this.Synth._context.state !== 'running') {
-						this.Synth._context.resume().then(() => {
+					if (this.Synth.context.state !== 'running') {
+						this.Synth.context.resume().then(() => {
 							console.log("Resuming Audio Context")
 							this.triggerAttack(note)
 						})
@@ -200,6 +203,9 @@ export default class KeyboardController extends Component {
 	}
 
 	triggerAttack(note){
+		console.log("Attacking", note)
+		console.log("Envelope:", this.Synth.get("envelope").envelope)
+
 		this.Synth.triggerAttack(note, `+${this.noteDelayTime}`)
 		let attackTime = Tone.now()
 
@@ -308,8 +314,6 @@ export default class KeyboardController extends Component {
 	}
 
 	setFilterType(type){
-		console.log(type)
-		console.log(this.state.filter)
 		this.setState(prevState => ({
 			filter: {
 				type: type,
@@ -368,6 +372,9 @@ export default class KeyboardController extends Component {
 		)
 	}
 }
+/*
+
+*/
 
 // ============================== //
 // ===== KEYBOARD CONTAINER ===== //

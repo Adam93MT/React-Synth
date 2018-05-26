@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 // import { PianoKey } from './keys.js'
-import { VerticalSlider } from './Sliders.js'
+import { VerticalSlider, HorizontalSlider } from './Sliders.js'
 import { WhiteButton } from './Buttons.js'
-import { Line } from 'react-chartjsx'
+// import { Line } from 'react-chartjsx'
+import { Line } from './chart.js'
 
 // ========================================================================================== //
 // ===================================== UPPER CONTROLS ===================================== //
@@ -209,6 +210,8 @@ class FilterControls extends Component {
 			"highshelf",
 			"lowshelf",
 		]
+
+		this.updateQ = this.updateQ.bind(this)
 	}
 
 	static getDerivedStateFromProps(nextProps, nextState){
@@ -249,6 +252,12 @@ class FilterControls extends Component {
 		}
 	}
 
+	updateQ(newValue){
+		this.props.setFilterParams({
+			Q: newValue
+		})
+	}
+
 	render(){
 		let FilterButtons = this.filterTypes.map((type) => 
 			<FilterTypeButton
@@ -264,12 +273,36 @@ class FilterControls extends Component {
 					{FilterButtons}
 				</div>
 				<div id="filter-graph">
+					<VerticalSlider
+						className="ctrl-slider"
+						id={`Q-slider`}
+						min={0}
+						max={5}
+						trackHeight={84}
+						thumbWidth={12}
+						thumbHeight={12}
+						value={this.props.filter.Q}
+						accuracy={10}
+						onChange={this.updateQ}
+					/>
 					<Line 
 						data={this.state.data}
 						options={this.chartOptions}
 						width={"160px"}
 						height={"auto"}
 						redraw={true}
+					/>
+					<HorizontalSlider
+						className="ctrl-slider"
+						id={`freq-slider`}
+						min={0}
+						max={5}
+						trackWidth={144}
+						thumbWidth={12}
+						thumbHeight={12}
+						value={this.props.filter.Q}
+						accuracy={10}
+						onChange={this.updateQ}
 					/>
 				</div>
 			</div>
