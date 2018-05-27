@@ -433,17 +433,23 @@ body {
     .keyboard-container .controls#upper-controls #filter-controls #filter-type-select {
       display: flex; }
       .keyboard-container .controls#upper-controls #filter-controls #filter-type-select .filter-button {
-        margin: 2px; }
+        margin: 4px; }
         .keyboard-container .controls#upper-controls #filter-controls #filter-type-select .filter-button img {
           max-width: 20px;
           padding: 4px; }
-    .keyboard-container .controls#upper-controls #filter-controls #filter-graph div {
-      display: inline-block; }
-    .keyboard-container .controls#upper-controls #filter-controls #filter-graph .vertical-slider {
-      display: inline-block; }
-    .keyboard-container .controls#upper-controls #filter-controls #filter-graph canvas {
-      padding: 2px;
-      margin: 8px 0; }
+    .keyboard-container .controls#upper-controls #filter-controls #filter-graph {
+      display: flex;
+      flex-wrap: wrap;
+      width: 180px;
+      background-color: rgba(255, 255, 255, 0.6); }
+      .keyboard-container .controls#upper-controls #filter-controls #filter-graph .filter-graph-container {
+        display: inline-block;
+        flex: 1;
+        height: 108px; }
+      .keyboard-container .controls#upper-controls #filter-controls #filter-graph .vertical-slider {
+        display: inline-block; }
+      .keyboard-container .controls#upper-controls #filter-controls #filter-graph .horizontal-slider {
+        flex: 1 1 100%; }
   .keyboard-container .controls#lower-controls {
     z-index: auto;
     display: grid;

@@ -3,7 +3,10 @@ import React, { Component } from 'react';
 import { VerticalSlider, HorizontalSlider } from './Sliders.js'
 import { WhiteButton } from './Buttons.js'
 // import { Line } from 'react-chartjsx'
-import { Line } from './chart.js'
+// import { Line } from './chart.js'
+import FilterGraph from './FilterGraph.js'
+
+// import Chart from 'chart.js';
 
 // ========================================================================================== //
 // ===================================== UPPER CONTROLS ===================================== //
@@ -139,7 +142,7 @@ class EnvelopeSlider extends Component {
 		this.setState({
 			value: newValue
 		})
-		console.log(newValue)
+		// console.log(newValue)
 	}
 
 	render(){
@@ -162,6 +165,7 @@ class EnvelopeSlider extends Component {
 }
 
 // ============ FILTER ============ //
+const frequencyBins = [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000]
 
 class FilterControls extends Component {
 	constructor(){
@@ -174,35 +178,33 @@ class FilterControls extends Component {
 
 			events: [],
 
+			autoskip: true,
+
 			legend: {
 				display: false
 			},
 
 			scales: {
 				yAxes: [{
-					display: false,
+					type: "linear",
+					// display: false,
 					ticks: {
-						min: -5.5,
-						max: 5.5
+						min: -6,
+						max: 6,
+						stepSize: 1
 					}
 				}],
 				xAxes: [{
-					display: false
+					type: "logarithmic",
+					// display: false,
+					ticks: {
+						min: 20,
+						max: 20000,
+					}
 				}]
 			}
 		}
-		this.state = {
-			data:  {
-				labels: [0, 1, 2, 3, 4],
-				datasets: [{ 
-					data: [1, -1, 0, -1, 1],
-					borderColor: 'rgba(14,0,51,1)',
-					borderWidth: 2,
-					fill: false,
-					pointRadius: 0
-				}]
-			}
-		}
+		this.state = {}
 		this.filterTypes = [
 			"lowpass",
 			"highpass",
@@ -211,50 +213,97 @@ class FilterControls extends Component {
 			"lowshelf",
 		]
 
+		// Methods
 		this.updateQ = this.updateQ.bind(this)
+		this.updateFreq = this.updateFreq.bind(this)
 	}
 
 	static getDerivedStateFromProps(nextProps, nextState){
-		let newData = [0,0,0,0,0]
+		let newData = [0,0,0,0,0,0,0,0,0,0]
+		let filterPattern = ["before", "at", "after"]
 		let Q = nextProps.filter.Q
+		let f = nextProps.filter.frequency
+		let min = -5
+		// Pattern: [before f, at f, after f]
 
 		switch(nextProps.filter.type){
 			case "lowpass":
-				newData = [0,0,0,Q,-5]
+				filterPattern = [0, Q, min]
 				break;
 			case "highpass":
-				newData = [-5,Q,0,0,0]
+				filterPattern = [min, Q, 0]
 				break;
 			case "bandpass":
-				newData = [-5, -5, Q, -5, -5]
+				filterPattern = [min, Q, min]
 				break;
 			case "lowshelf":
-				newData = [Q, Q, 0, -5, -5]
+				filterPattern = [Q, 0, min]
 				break;
 			case "highshelf":
-				newData = [-5, -5, 0, Q, Q]
+				filterPattern = [min, 0, Q]
 				break;
 			default:
-				newData = [0,0,0,0,0]
+				filterPattern = [0,0,0]
 				break
 		}
 
-		return {data: {
-				labels: [0, 1, 2, 3, 4],
-				datasets: [{
-					data: newData,
-					borderColor: 'rgba(14,0,51,1)',
-					borderWidth: 2,
-					fill: false,
-					pointRadius: 0
-				}]
+		f = FilterControls.roundToValues(f, frequencyBins)
+		let f_idx = frequencyBins.indexOf(f)
+
+		for (var i = 0; i < newData.length; i++) {
+			if (i < f_idx) {
+				newData[i] = filterPattern[0]
+			}
+			else if (i === f_idx) {
+				newData[i] = filterPattern[1]
+			}
+			else if (i > f_idx) {
+				newData[i] = filterPattern[2]
 			}
 		}
+		// console.log(newData)
+		// return FilterControls.formatData(newData)
+		return {data: newData}
+	}
+
+	// static formatData(newData){
+	// 	return {
+	// 		data: {
+	// 			labels: this.frequencyBins,
+	// 			datasets: [{
+	// 				data: newData,
+	// 				borderColor: 'rgba(14,0,51,1)',
+	// 				borderWidth: 1,
+	// 				fill: true,
+	// 				pointRadius: 1
+	// 			}]
+	// 		}
+	// 	}
+	// }
+
+	static roundToValues(num, array){
+		let last_idx = array.length
+		let mp_idx = parseInt(last_idx/2, 10)
+
+		if (last_idx <= 1){
+			return (array[1] - num) <= (array[0] - num) ? array[1] : array[0]
+		}
+		else if (num > array[mp_idx]){
+			return FilterControls.roundToValues(num, array.slice(mp_idx, last_idx))
+		} else if (num < array[mp_idx]) {
+			return FilterControls.roundToValues(num, array.slice(0, mp_idx))
+		}
+
 	}
 
 	updateQ(newValue){
 		this.props.setFilterParams({
 			Q: newValue
+		})
+	}
+	updateFreq(newValue){
+		this.props.setFilterParams({
+			frequency: newValue
 		})
 	}
 
@@ -267,6 +316,7 @@ class FilterControls extends Component {
 				key={type}
 			/>
 		)
+
 		return(
 			<div className="ctrl-container" id="filter-controls">
 				<div id="filter-type-select">
@@ -281,34 +331,44 @@ class FilterControls extends Component {
 						trackHeight={84}
 						thumbWidth={12}
 						thumbHeight={12}
+						margin={[8, 'default', 0, 'default']}
 						value={this.props.filter.Q}
 						accuracy={10}
 						onChange={this.updateQ}
 					/>
-					<Line 
-						data={this.state.data}
-						options={this.chartOptions}
-						width={"160px"}
-						height={"auto"}
-						redraw={true}
+
+					<FilterGraph 
+						className="fill"
+						filterData={this.state.data}
 					/>
+
 					<HorizontalSlider
 						className="ctrl-slider"
 						id={`freq-slider`}
-						min={0}
-						max={5}
+						min={20}
+						max={20000}
+						scale={"log"}
+						accuracy={10}
+						value={this.props.filter.frequency}
 						trackWidth={144}
 						thumbWidth={12}
 						thumbHeight={12}
-						value={this.props.filter.Q}
-						accuracy={10}
-						onChange={this.updateQ}
+						margin={['default', 8, 'default', 28]}
+						onChange={this.updateFreq}
 					/>
 				</div>
 			</div>
 		)
 	}
 }
+
+//<Line 
+//	data={this.state.data}
+//	options={this.chartOptions}
+	// width={"160px"}
+	// height={"auto"}
+//	redraw={true}
+///>
 
 // Combine this with WaveFormButton eventually
 class FilterTypeButton extends Component {

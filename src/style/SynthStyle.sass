@@ -178,20 +178,28 @@ body
 				#filter-type-select
 					display: flex
 					.filter-button
-						margin: 2px
+						margin: 4px
 						img
 							max-width: 20px
 							padding: 4px
 
 				#filter-graph
-					div
+					display: flex
+					flex-wrap: wrap
+					width: 180px
+					background-color: $white-trans
+
+					.filter-graph-container
 						display: inline-block
+						flex: 1
+						height: 108px
 					.vertical-slider
 						display: inline-block
-					canvas
-						// background-color: $white-trans
-						padding: 2px
-						margin: 8px 0
+					.horizontal-slider
+						flex: 1 1 100%
+
+						// padding: 2px
+						// margin: 8px 0
 
 
 		&#lower-controls

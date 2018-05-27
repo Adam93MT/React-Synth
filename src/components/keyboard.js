@@ -51,7 +51,7 @@ export default class KeyboardController extends Component {
 				type: "lowpass",
 				rolloff: -12,
 				frequency: 440,
-				Q: 0,
+				Q: 1,
 				gain: 0
 			}
 		}
@@ -72,7 +72,7 @@ export default class KeyboardController extends Component {
 	setupSynth(){
 		this.Synth.set({
 			polyphony: 8,
-			volume: -1,
+			volume: -12,
 			voice: Tone.Synth,
 			oscillator: {
 				type: this.state.waveform
@@ -325,15 +325,20 @@ export default class KeyboardController extends Component {
 	}
 
 	setFilterParams({frequency, rolloff, Q}){
+		let newFilter = this.state.filter
+		if (frequency !== this.state.frequency){
+			newFilter.frequency = frequency
+		}
+		if (rolloff !== this.state.rolloff) {
+			newFilter.rolloff = rolloff
+		}
+		if (Q !== this.state.Q) {
+			newFilter.Q = Q
+		}
 
-		this.setState(prevState => ({
-			filter: {
-				type: prevState.filter.type,
-				frequency: frequency,
-				rolloff: rolloff,
-				Q: Q
-			}
-		}))
+		this.setState({
+			filter: newFilter
+		})
 	}
 
   	isSustaining(){

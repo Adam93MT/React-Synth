@@ -5,6 +5,7 @@ class Slider extends Component{
 
 	constructor(props){
 		super(props)
+		this.initialValue = 0
 		// State
 		this.state = {
 			value: props.value,
@@ -14,12 +15,13 @@ class Slider extends Component{
 		// Methods
 		this.handleClick = this.handleClick.bind(this)
 		this.handleDrag = this.handleDrag.bind(this)
+		this.setNewValueOnDrag = this.setNewValueOnDrag.bind(this)
 		this.handleRelease = this.handleRelease.bind(this)
 		this.handleFocus = this.handleFocus.bind(this)
 		this.handleBlur = this.handleBlur.bind(this)
 		this.handleKeyDown = this.handleKeyDown.bind(this)
-		this.limitToRange = this.limitToRange.bind(this)
-		this.roundToAccuracy = this.roundToAccuracy.bind(this)
+		this.getValueAsPercent = this.getValueAsPercent.bind(this)
+		this.getMarginString = this.getMarginString.bind(this)
 	}
 
 	componentDidUpdate (props, state) {
@@ -42,6 +44,33 @@ class Slider extends Component{
 		// will be overwritten
 		e.stopPropagation()
     	e.preventDefault()
+	}
+
+	setNewValueOnDrag(initialPoint, cursorPoint, elemStart, elemSize){
+		cursorPoint = Slider.limitToRange(cursorPoint, elemStart, elemStart + elemSize)
+		let valueRange = this.props.max - this.props.min
+
+		//  Absolute method (has offset errors)
+		let valuePct = (cursorPoint - elemStart) / elemSize
+		valuePct = this.type === "vertical" ? 1 - valuePct : valuePct	
+		// if (this.props.scale === "log") {
+		// 	valuePct = Math.pow(10, valuePct)/10
+		// }
+		let newValue = valuePct * valueRange
+
+		// let diff = cursorPoint - initialPoint
+		// diff = this.type === "vertical" ? -diff : diff
+		// let pctChange = parseFloat(diff) / parseFloat(elemSize)
+		// let valueDiff = pctChange * parseFloat(valueRange)
+		// let newValue = this.initialValue + valueDiff
+
+		newValue = Slider.limitToRange(newValue, parseFloat(this.props.min), parseFloat(this.props.max))
+		newValue = this.props.accuracy ? Slider.roundToAccuracy(newValue, this.props.accuracy) : newValue
+		
+		this.setState({
+			value: newValue
+		})
+		this.props.onChange(newValue)
 	}
 
 	handleRelease(e){
@@ -68,7 +97,7 @@ class Slider extends Component{
 
 	// -------------------- //
 
-	limitToRange(val, min, max){
+	static limitToRange(val, min, max){
 		if (val >= min) {
 			if (val <= max) {
 				return val
@@ -80,12 +109,56 @@ class Slider extends Component{
 		}
 	}
 
-	roundToAccuracy(number){
-		if (this.props.accuracy) {
-			return Math.round(number*this.props.accuracy)/this.props.accuracy
+	static roundToAccuracy(number, accuracy){
+		if (accuracy) {
+			return Math.round(number*accuracy)/accuracy
 		}
 		else {return number}
 	}
+
+	getValueAsPercent(){
+		// if (this.props.scale === "log" || this.props.scale === "logarithmic") {
+			// return Math.pow(10, this.state.value/(this.props.max - this.props.min))/10 * 100
+		// }
+
+		return this.state.value/(this.props.max - this.props.min) * 100
+	}
+
+	getMarginString(){
+		let num_args = this.props.margin ? this.props.margin.length : 0
+		// if there's a blank array index set it to either thumbWidth or thumbHeight depending on the index
+		if (num_args > 0) {
+			let marginArr = this.props.margin.slice()
+			let margin = ''
+			for (var i = 0; i < this.props.margin.length; i++) {
+				if (this.props.margin[i] === '' || this.props.margin[i] === 'default' || this.props.margin[i] === null) {
+					marginArr[i] = i%2 === 0 ? this.props.thumbHeight : this.props.thumbWidth
+				}
+			}
+			switch(num_args){
+				case 1:
+					margin = `${marginArr[0]}px`
+					break;
+				case 2:
+					margin = `${marginArr[0]}px ${marginArr[1]}px`
+					break;
+				case 4:
+					margin = `${marginArr[0]}px ${marginArr[1]}px ${marginArr[2]}px ${marginArr[3]}px`
+					break;
+				default:
+					margin = `${this.props.thumbHeight}px ${this.props.thumbWidth}px`
+					break;
+			}
+			return margin
+		}
+		else {
+			return `${this.props.thumbHeight}px ${this.props.thumbWidth}px`
+		}
+	}
+}
+
+Slider.defaultProps = {
+	scale: 'linear'
 }
 
 // ================================================================ //
@@ -95,6 +168,7 @@ class Slider extends Component{
 export class VerticalSlider extends Slider {
 	constructor(props){
 		super(props)
+		this.type = "vertical"
 		this.initialY = 0
 		this.initialValue = 0
 		this.elementHeight = 0
@@ -120,20 +194,7 @@ export class VerticalSlider extends Slider {
 
 	handleDrag(e){
 		if (this.state.isDragging){
-			let pageY = e.pageY
-			pageY = this.limitToRange(pageY, this.elementTop, this.elementTop + this.elementHeight)
-
-			let yDiff = this.initialY - pageY
-			let pctChange = parseFloat(yDiff) / parseFloat(this.elementHeight)
-			let valueDiff = pctChange * parseFloat(this.props.max - this.props.min)
-			let newValue = this.limitToRange(this.initialValue + valueDiff, parseFloat(this.props.min), parseFloat(this.props.max))
-			
-			newValue = this.roundToAccuracy(newValue)
-			// console.log(pageY, yDiff, pctChange, valueDiff, newValue)
-			this.setState({
-				value: newValue
-			})
-			this.props.onChange(newValue)
+			this.setNewValueOnDrag(this.initialY, e.pageY, this.elementTop, this.elementHeight)
 	 	}
 	 	e.stopPropagation()
     	e.preventDefault()
@@ -157,12 +218,14 @@ export class VerticalSlider extends Slider {
 	}
 
 	render(){
-		let pct = this.state.value/(this.props.max - this.props.min) * 100
+		let pct = this.getValueAsPercent()
+		let margin = this.getMarginString()
+
 		let trackStyle = {
 			height: this.props.trackHeight,
 			width: this.props.trackWidth,
 			transform: `translateX(${-this.props.trackWidth/2}px)`,
-			margin: `${this.props.thumbHeight}px ${this.props.thumbWidth}px ${this.props.thumbHeight}px ${this.props.thumbWidth}px`
+			margin: margin
 		}
 
 		let thumbStyle = {
@@ -210,6 +273,7 @@ VerticalSlider.defaultProps = {
 export class HorizontalSlider extends Slider {
 	constructor(props){
 		super(props)
+		this.type = "horizontal"
 		this.initialX = 0
 		this.initialValue = 0
 		this.elementWidth = 0
@@ -217,7 +281,7 @@ export class HorizontalSlider extends Slider {
 	}
 
 	componentDidMount() {
-		console.log(this.refs)
+		// console.log(this.refs)
 	 	this.elementWidth = this.refs[this.props.id].clientWidth
 	 	this.elementLeft = this.refs[this.props.id].offsetLeft
 	}
@@ -235,21 +299,8 @@ export class HorizontalSlider extends Slider {
 
 	handleDrag(e){
 		if (this.state.isDragging){
-			let pageX = e.pageX
-			pageX = this.limitToRange(pageX, this.elementLeft, this.elementLeft + this.elementWidth)
-
-			let xDiff = pageX - this.initialX
-			let pctChange = parseFloat(xDiff) / parseFloat(this.elementWidth)
-			let valueDiff = pctChange * parseFloat(this.props.max - this.props.min)
-			let newValue = this.limitToRange(this.initialValue + valueDiff, parseFloat(this.props.min), parseFloat(this.props.max))
-			
-			newValue = this.roundToAccuracy(newValue)
-
-			this.setState({
-				value: newValue
-			})
-			this.props.onChange(newValue)
-	 	}
+			this.setNewValueOnDrag(this.initialX, e.pageX, this.elementLeft, this.elementWidth)
+		}
 	 	e.stopPropagation()
     	e.preventDefault()
 	}
@@ -272,12 +323,14 @@ export class HorizontalSlider extends Slider {
 	}
 
 	render(){
-		let pct = this.state.value/(this.props.max - this.props.min) * 100
+		let pct = this.getValueAsPercent()
+		let margin = this.getMarginString()
+
 		let trackStyle = {
 			height: this.props.trackHeight,
 			width: this.props.trackWidth,
 			transform: `translateY(${-this.props.trackHeight/2}px)`,
-			margin: `${this.props.thumbHeight}px ${this.props.thumbWidth}px ${this.props.thumbHeight}px ${this.props.thumbWidth}px`
+			margin: margin
 		}
 
 		let thumbStyle = {
