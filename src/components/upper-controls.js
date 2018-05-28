@@ -24,11 +24,13 @@ export class UpperControls extends Component {
 					envelope={this.props.envelope}
 					setEnvelope={this.props.setEnvelope}
 				/>
+				{/*
 				<FilterControls
 					filter={this.props.filter}
 					setFilterType={this.props.setFilterType}
 					setFilterParams={this.props.setFilterParams}
 				/>
+				*/}
 			</div>
 		)
 	}
@@ -206,6 +208,7 @@ class FilterControls extends Component {
 		}
 		this.state = {}
 		this.filterTypes = [
+			"allpass",
 			"lowpass",
 			"highpass",
 			"bandpass",
@@ -227,6 +230,9 @@ class FilterControls extends Component {
 		// Pattern: [before f, at f, after f]
 
 		switch(nextProps.filter.type){
+			case "allpass": 
+				filterPattern = [Q, Q, Q]
+				break;
 			case "lowpass":
 				filterPattern = [0, Q, min]
 				break;
@@ -261,6 +267,8 @@ class FilterControls extends Component {
 				newData[i] = filterPattern[2]
 			}
 		}
+
+		// console.log(nextProps.filter.type, filterPattern, newData)
 		// console.log(newData)
 		// return FilterControls.formatData(newData)
 		return {data: newData}
@@ -339,6 +347,7 @@ class FilterControls extends Component {
 
 					<FilterGraph 
 						className="fill"
+						filterType={this.props.filter.type}
 						filterData={this.state.data}
 					/>
 
@@ -348,7 +357,7 @@ class FilterControls extends Component {
 						min={20}
 						max={20000}
 						scale={"log"}
-						accuracy={10}
+						accuracy={100}
 						value={this.props.filter.frequency}
 						trackWidth={144}
 						thumbWidth={12}
@@ -361,14 +370,6 @@ class FilterControls extends Component {
 		)
 	}
 }
-
-//<Line 
-//	data={this.state.data}
-//	options={this.chartOptions}
-	// width={"160px"}
-	// height={"auto"}
-//	redraw={true}
-///>
 
 // Combine this with WaveFormButton eventually
 class FilterTypeButton extends Component {

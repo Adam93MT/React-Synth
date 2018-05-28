@@ -440,7 +440,7 @@ body {
     .keyboard-container .controls#upper-controls #filter-controls #filter-graph {
       display: flex;
       flex-wrap: wrap;
-      width: 180px;
+      width: 216px;
       background-color: rgba(255, 255, 255, 0.6); }
       .keyboard-container .controls#upper-controls #filter-controls #filter-graph .filter-graph-container {
         display: inline-block;

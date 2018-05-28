@@ -52,11 +52,25 @@ class Slider extends Component{
 
 		//  Absolute method (has offset errors)
 		let valuePct = (cursorPoint - elemStart) / elemSize
-		valuePct = this.type === "vertical" ? 1 - valuePct : valuePct	
-		// if (this.props.scale === "log") {
-		// 	valuePct = Math.pow(10, valuePct)/10
-		// }
+		valuePct = this.type === "vertical" ? 1 - valuePct : valuePct
+
 		let newValue = valuePct * valueRange
+
+		if (this.props.scale === "log") {
+			let logMax = Math.log10(this.props.max)
+			let logMin = Math.log10(this.props.min)
+			// 0 ==========50==========100 -- pct
+			// (pct/(100) * (4-1)) + 1 = log
+			// 1 ========== 2 ========== 4 -- log(value)
+			// 10^(log) = value
+			// 10==========??==========10k -- value
+			let logValue = (valuePct * (logMax-logMin)) + logMin
+			newValue = Math.pow(10, logValue)
+
+			// console.log("valuePct", valuePct)
+			// console.log("logValue", logValue)
+			// console.log("newValue", newValue)
+		}
 
 		// let diff = cursorPoint - initialPoint
 		// diff = this.type === "vertical" ? -diff : diff
@@ -117,11 +131,17 @@ class Slider extends Component{
 	}
 
 	getValueAsPercent(){
-		// if (this.props.scale === "log" || this.props.scale === "logarithmic") {
-			// return Math.pow(10, this.state.value/(this.props.max - this.props.min))/10 * 100
-		// }
+		let valueRange = (this.props.max - this.props.min)
+		if (this.props.scale === "log" || this.props.scale === "logarithmic") {
+			let logMax = Math.log10(this.props.max)
+			let logMin = Math.log10(this.props.min)
+			let logValue = Math.log10(this.state.value)
+			// (pct/(100) * (logMax-logMin)) + logMin = value
+			// (value - logMin)/(logmax-logmin)*100 = pct
+			return (logValue - logMin)/(logMax - logMin) * 100
+		}
 
-		return this.state.value/(this.props.max - this.props.min) * 100
+		return this.state.value/valueRange * 100
 	}
 
 	getMarginString(){
