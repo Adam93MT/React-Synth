@@ -13,8 +13,8 @@ export default class KeyboardController extends Component {
 	constructor(){
 		super()
 		// static
-		this.pSynth = new Tone.PolySynth() // we don't want to re-render every time this changes, only certain elements
-		this.Filter = new Tone.Filter(4400, "highpass", -12)
+		this.pSynth = new Tone.PolySynth()
+		this.Filter = new Tone.Filter(1000, "allpass", -12)
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
 		this.octaveMinMax = [2, 7]
@@ -51,10 +51,10 @@ export default class KeyboardController extends Component {
 				release: 0.15
 			},
 			filter: {
-				type: "allpass",
+				type: "lowpass",
 				rolloff: -12,
-				frequency: 440,
-				Q: 0,
+				frequency: 4400,
+				Q: 1,
 				gain: 0
 			}
 		}
@@ -65,7 +65,9 @@ export default class KeyboardController extends Component {
 		window.addEventListener("keyup", this.handleKeyUp, false);
 
 		this.setupSynth()
-		this.pSynth.toMaster()
+		this.setupFilter()
+		// this.pSynth.toMaster()
+
 	}
 	componentWillUnmount(){
 		window.removeEventListener("keydown", this.handleKeyDown, false);
@@ -80,8 +82,7 @@ export default class KeyboardController extends Component {
 			oscillator: {
 				type: this.state.waveform
 			},
-			envelope: this.state.envelope,
-			filter: this.state.filter
+			envelope: this.state.envelope
 		})
 
 		console.log("Envelope:", this.pSynth.get("envelope"))
@@ -351,15 +352,18 @@ export default class KeyboardController extends Component {
 	setupFilter(){
 		// this.Filter.dispose()
 		// this.Filter = new Tone.Filter(this.state.filter.frequency, this.state.filter.type, this.state.filter.rolloff)
-		// this.Filter.type = this.state.filter.type
-		// this.Filter.frequency.setValueAtTime(this.state.filter.frequency, "+0.5")
-		// this.Filter.rolloff.setValueAtTime(this.state.filter.rolloff, "+0.5")
-		// this.Filter.Q.setValueAtTime(this.state.filter.Q, "+0.5")
-		console.log(this.pSynth)
-		this.Filter.connect(this.pSynth.output.output.output)
+		this.Filter.type = this.state.filter.type
+		this.Filter.frequency.value = this.state.filter.frequency
+		// this.Filter.rolloff.value = this.state.filter.rolloff
+		this.Filter.Q.value = this.state.filter.Q
+		this.pSynth.disconnect()
+		this.pSynth.connect(this.Filter)
+		this.Filter.toMaster()
 	}
 	removeFilter(){
 		this.Filter.disconnect()
+		this.pSynth.disconnect()
+		this.pSynth.toMaster()
 	}
 
   	isSustaining(){

@@ -24,13 +24,13 @@ export class UpperControls extends Component {
 					envelope={this.props.envelope}
 					setEnvelope={this.props.setEnvelope}
 				/>
-				{/*
+				{
 				<FilterControls
 					filter={this.props.filter}
 					setFilterType={this.props.setFilterType}
 					setFilterParams={this.props.setFilterParams}
 				/>
-				*/}
+				}
 			</div>
 		)
 	}
