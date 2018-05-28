@@ -37,8 +37,6 @@ export default class FilterGraph extends Component {
 		let yRange = 10 //Math.max(Math.abs(Math.max(...this.props.filterData)) , Math.abs(Math.min(...this.props.filterData))) * 2
 		let yStepSize = canvas.height / yRange
 
-		let minX = 0
-		let maxX = canvas.width 
 		let xStepSize = canvas.width / this.props.filterData.length
 
 		ctx.strokeStyle = 'rgba(14,0,51,1)';

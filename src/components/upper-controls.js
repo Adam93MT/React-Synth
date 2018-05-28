@@ -154,7 +154,7 @@ class EnvelopeSlider extends Component {
 				<VerticalSlider
 					className="ctrl-slider"
 					id={`${this.props.type}-slider`}
-					min="0"
+					min={0}
 					max={this.props.maxValue}
 					value={this.state.value}
 					accuracy={10}
@@ -240,7 +240,7 @@ class FilterControls extends Component {
 				filterPattern = [min, Q, 0]
 				break;
 			case "bandpass":
-				filterPattern = [min, Q, min]
+				filterPattern = [0, Q, 0]
 				break;
 			case "lowshelf":
 				filterPattern = [Q, 0, min]
@@ -325,15 +325,29 @@ class FilterControls extends Component {
 			/>
 		)
 
+		let filterValuesIndicator = this.props.filter.type === "allpass" 
+		? (
+			<div className="filterValues">
+			</div>
+		) 
+		: (
+			<div className="filterValues">
+				<div>Q: {this.props.filter.Q}</div>
+				<div>f: {parseInt(this.props.filter.frequency, 10)} Hz</div>
+			</div>
+		)
+
 		return(
 			<div className="ctrl-container" id="filter-controls">
 				<div id="filter-type-select">
 					{FilterButtons}
 				</div>
 				<div id="filter-graph">
+					{filterValuesIndicator}
 					<VerticalSlider
 						className="ctrl-slider"
 						id={`Q-slider`}
+						isEnabled={this.props.filter.type !== "allpass"}
 						min={0}
 						max={5}
 						trackHeight={84}
@@ -354,6 +368,7 @@ class FilterControls extends Component {
 					<HorizontalSlider
 						className="ctrl-slider"
 						id={`freq-slider`}
+						isEnabled={this.props.filter.type !== "allpass"}
 						min={20}
 						max={20000}
 						scale={"log"}

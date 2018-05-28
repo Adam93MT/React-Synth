@@ -51,9 +51,9 @@ export default class KeyboardController extends Component {
 				release: 0.15
 			},
 			filter: {
-				type: "lowpass",
+				type: "allpass",
 				rolloff: -12,
-				frequency: 4400,
+				frequency: 440,
 				Q: 1,
 				gain: 0
 			}
@@ -65,8 +65,8 @@ export default class KeyboardController extends Component {
 		window.addEventListener("keyup", this.handleKeyUp, false);
 
 		this.setupSynth()
-		this.setupFilter()
-		// this.pSynth.toMaster()
+		// this.setupFilter()
+		this.pSynth.toMaster()
 
 	}
 	componentWillUnmount(){

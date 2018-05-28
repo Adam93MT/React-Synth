@@ -5,7 +5,10 @@ class Slider extends Component{
 
 	constructor(props){
 		super(props)
+		this.initialCoord = 0
 		this.initialValue = 0
+		this.elementSize = 0
+		this.elementStart = 0
 		// State
 		this.state = {
 			value: props.value,
@@ -35,13 +38,22 @@ class Slider extends Component{
 	}
 
 	handleClick(e){
-		//will be overwritten
+		if (e.button !== 0) return
+		else if (this.props.isEnabled === false) return
+		this.initialCoord = e[this.EventCoordName]
+		this.initialValue = this.state.value
+		this.setState({
+			isDragging: true
+		})
+
 		e.stopPropagation()
     	e.preventDefault() 
 	}
 
 	handleDrag(e){
-		// will be overwritten
+		if (this.state.isDragging){
+			this.setNewValueOnDrag(this.initialCoord, e[this.EventCoordName], this.elementStart, this.elementSize)
+		}
 		e.stopPropagation()
     	e.preventDefault()
 	}
@@ -56,20 +68,16 @@ class Slider extends Component{
 
 		let newValue = valuePct * valueRange
 
-		if (this.props.scale === "log") {
-			let logMax = Math.log10(this.props.max)
-			let logMin = Math.log10(this.props.min)
+		if (this.props.scale === "log" || this.props.scale === "logarithmic") {
 			// 0 ==========50==========100 -- pct
 			// (pct/(100) * (4-1)) + 1 = log
 			// 1 ========== 2 ========== 4 -- log(value)
 			// 10^(log) = value
 			// 10==========??==========10k -- value
+			let logMax = Math.log10(this.props.max)
+			let logMin = Math.log10(this.props.min)
 			let logValue = (valuePct * (logMax-logMin)) + logMin
 			newValue = Math.pow(10, logValue)
-
-			// console.log("valuePct", valuePct)
-			// console.log("logValue", logValue)
-			// console.log("newValue", newValue)
 		}
 
 		// let diff = cursorPoint - initialPoint
@@ -104,9 +112,21 @@ class Slider extends Component{
 		document.removeEventListener('keydown', this.handleKeyDown)
 	}
 	handleKeyDown(e){
-		// will be overwritten
-		e.stopPropagation()
-    	e.preventDefault()
+		if (this.props.isEnabled === false) return
+		let keydown = e.key
+		let increment = this.props.accuracy ? 1/this.props.accuracy : 0.01
+		let newValue = 0
+		if (keydown === this.UpKey) {
+			newValue = this.limitToRange(this.state.value + increment, this.props.min, this.props.max)
+		} else if (keydown === this.DownKey) {
+			newValue = this.limitToRange(this.state.value - increment, this.props.min, this.props.max)
+		} else return
+
+		newValue = this.roundToAccuracy(newValue)
+		this.setState({
+			value: newValue
+		})
+		this.props.onChange(newValue)
 	}
 
 	// -------------------- //
@@ -178,6 +198,7 @@ class Slider extends Component{
 }
 
 Slider.defaultProps = {
+	isEnabled: true,
 	scale: 'linear'
 }
 
@@ -189,57 +210,24 @@ export class VerticalSlider extends Slider {
 	constructor(props){
 		super(props)
 		this.type = "vertical"
-		this.initialY = 0
-		this.initialValue = 0
-		this.elementHeight = 0
-		this.elementTop = 0
+		this.EventCoordName = "pageY"
+		this.UpKey = "ArrowUp"
+		this.DownKey = "ArrowDown"
 	}
 
 	componentDidMount() {
-		// console.log(this.refs)
-	 	this.elementHeight = this.refs[this.props.id].clientHeight
-	 	this.elementTop = this.refs[this.props.id].offsetTop
-	}
-
-	handleClick(e){
-		if (e.button !== 0) return
-		this.initialY = e.pageY
-		this.initialValue = this.state.value
-		this.setState({
-			isDragging: true
-		})
-		e.stopPropagation()
-    	e.preventDefault() 
-	}
-
-	handleDrag(e){
-		if (this.state.isDragging){
-			this.setNewValueOnDrag(this.initialY, e.pageY, this.elementTop, this.elementHeight)
-	 	}
-	 	e.stopPropagation()
-    	e.preventDefault()
-	}
-
-	handleKeyDown(e){
-		let keydown = e.key
-		let increment = this.props.accuracy ? 1/this.props.accuracy : 0.01
-		let newValue = 0
-		if (keydown === "ArrowUp") {
-			newValue = this.limitToRange(this.state.value + increment, this.props.min, this.props.max)
-		} else if (keydown === "ArrowDown") {
-			newValue = this.limitToRange(this.state.value - increment, this.props.min, this.props.max)
-		} else return
-
-		newValue = this.roundToAccuracy(newValue)
-		this.setState({
-			value: newValue
-		})
-		this.props.onChange(newValue)
+	 	this.elementSize = this.refs[this.props.id].clientHeight
+	 	let elem = this.refs[this.props.id]
+	 	do {
+	        this.elementStart += elem.offsetTop || 0;
+	        elem = elem.offsetParent;
+	    } while(elem);
 	}
 
 	render(){
 		let pct = this.getValueAsPercent()
 		let margin = this.getMarginString()
+		let isEnabledClass = this.props.isEnabled === true ? 'enabled' : 'disabled'
 
 		let trackStyle = {
 			height: this.props.trackHeight,
@@ -256,29 +244,33 @@ export class VerticalSlider extends Slider {
 		}
 
 		return (
-			<div 
-				className={`slider vertical-slider ${this.props.className}`} 
-				id={this.props.id}
-				ref={this.props.id}
-				style={trackStyle}
-			>
+			<div className="slider-relative-container">
 				<div 
-					className="min-track" 
-					style={{height: pct+'%'}}/>
-				<span 
-					className="slider-thumb"
-					style={thumbStyle} 
-					onMouseDown={this.handleClick} 
-					onFocus={this.handleFocus}
-					onBlur={this.handleBlur}
-					tabIndex="0"
-				></span>
+					className={`slider vertical-slider ${this.props.className} ${isEnabledClass}`} 
+					id={this.props.id}
+					ref={this.props.id}
+					style={trackStyle}
+				>
+					<div 
+						className="min-track" 
+						style={{height: pct+'%'}}/>
+					<span 
+						className="slider-thumb"
+						style={thumbStyle} 
+						onMouseDown={this.handleClick} 
+						onFocus={this.handleFocus}
+						onBlur={this.handleBlur}
+						tabIndex="0"
+					></span>
+				</div>
 			</div>
 		)
 	}
 }
 
 VerticalSlider.defaultProps = {
+	isEnabled: true,
+	scale: 'linear',
 	trackHeight: 56,
 	trackWidth: 2,
 	thumbHeight: 16,
@@ -294,57 +286,24 @@ export class HorizontalSlider extends Slider {
 	constructor(props){
 		super(props)
 		this.type = "horizontal"
-		this.initialX = 0
-		this.initialValue = 0
-		this.elementWidth = 0
-		this.elementTop = 0
+		this.EventCoordName = "pageX"
+		this.UpKey = "ArrowRight"
+		this.DownKey = "ArrowLeft"
 	}
 
 	componentDidMount() {
-		// console.log(this.refs)
-	 	this.elementWidth = this.refs[this.props.id].clientWidth
-	 	this.elementLeft = this.refs[this.props.id].offsetLeft
-	}
-
-	handleClick(e){
-		if (e.button !== 0) return
-		this.initialX = e.pageX
-		this.initialValue = this.state.value
-		this.setState({
-			isDragging: true
-		})
-		e.stopPropagation()
-    	e.preventDefault() 
-	}
-
-	handleDrag(e){
-		if (this.state.isDragging){
-			this.setNewValueOnDrag(this.initialX, e.pageX, this.elementLeft, this.elementWidth)
-		}
-	 	e.stopPropagation()
-    	e.preventDefault()
-	}
-
-	handleKeyDown(e){
-		let keydown = e.key
-		let increment = this.props.accuracy ? 1/this.props.accuracy : 0.01
-		let newValue = 0
-		if (keydown === "ArrowRight") {
-			newValue = this.limitToRange(this.state.value + increment, this.props.min, this.props.max)
-		} else if (keydown === "ArrowLeft") {
-			newValue = this.limitToRange(this.state.value - increment, this.props.min, this.props.max)
-		} else return
-
-		newValue = this.roundToAccuracy(newValue)
-		this.setState({
-			value: newValue
-		})
-		this.props.onChange(newValue)
+	 	this.elementSize = this.refs[this.props.id].clientWidth
+	 	let elem = this.refs[this.props.id]
+	 	do {
+	        this.elementStart += elem.offsetLeft || 0;
+	        elem = elem.offsetParent;
+	    } while(elem);
 	}
 
 	render(){
 		let pct = this.getValueAsPercent()
 		let margin = this.getMarginString()
+		let isEnabledClass = this.props.isEnabled ? 'enabled' : 'disabled'
 
 		let trackStyle = {
 			height: this.props.trackHeight,
@@ -362,14 +321,14 @@ export class HorizontalSlider extends Slider {
 
 		return (
 			<div 
-				className={`slider horizontal-slider ${this.props.className}`} 
+				className={`slider horizontal-slider ${this.props.className} ${isEnabledClass}`} 
 				id={this.props.id}
 				ref={this.props.id}
 				style={trackStyle}
 			>
 				<div 
 					className="min-track" 
-					style={{height: pct+'%'}}/>
+					style={{width: pct+'%'}}/>
 				<span 
 					className="slider-thumb"
 					style={thumbStyle} 
@@ -384,6 +343,8 @@ export class HorizontalSlider extends Slider {
 }
 
 HorizontalSlider.defaultProps = {
+	isEnabled: true,
+	scale: 'linear',
 	trackHeight: 2,
 	trackWidth: 56,
 	thumbHeight: 24,

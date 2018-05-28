@@ -5,13 +5,14 @@ $track-width: 2px
 $thumb-width: 24px
 $thumb-height: 16px
 
+.slider-relative-container
+	position: relative
 .slider
 	position: relative
 	background-color: $blue-dark
 
 	.min-track
 		z-index: 0
-		width: 100%
 		position: absolute
 		background-color: $black
 		opacity: 0.7
@@ -28,10 +29,20 @@ $thumb-height: 16px
 			+box-shadow(0, 0, 2px, $black)
 			+CornerToCornerGradient($off-white, $light-grey)
 
+	&.disabled
+		opacity: 0.5
+		.slider-thumb
+			cursor: auto
+			&:active, &:focus
+				+CornerToCornerGradient($white, $off-white)
+				+box-shadow(0, 2px, 4px, $black)
+
 .vertical-slider
 	.min-track
 		bottom: 0
+		width: 100%
 
 .horizontal-slider
 	.min-track
 		left: 0
+		height: 100%
