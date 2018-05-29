@@ -84,8 +84,6 @@ export default class KeyboardController extends Component {
 			},
 			envelope: this.state.envelope
 		})
-
-		console.log("Envelope:", this.pSynth.get("envelope"))
 	}
 
 	handleKeyDown(e){
@@ -208,8 +206,8 @@ export default class KeyboardController extends Component {
 	}
 
 	triggerAttack(note){
-		console.log("Attacking", note)
-		console.log("Envelope:", this.pSynth.get("envelope").envelope)
+		// console.log("Attacking", note)
+		// console.log("Envelope:", this.pSynth.get("envelope").envelope)
 
 		this.pSynth.triggerAttack(note, `+${this.noteDelayTime}`)
 		let attackTime = Tone.now()
@@ -243,8 +241,8 @@ export default class KeyboardController extends Component {
 			let envelopeAttack = this.pSynth.get("envelope.attack").envelope.attack
 			let delayReleaseTime = timeSinceAttack < envelopeAttack ? (envelopeAttack - timeSinceAttack) + 0.1 : 0.1
 
-			console.log(currentTime, noteAttackTime, timeSinceAttack, envelopeAttack)
-			console.log(note, "delayRelease", delayReleaseTime)
+			// console.log(currentTime, noteAttackTime, timeSinceAttack, envelopeAttack)
+			// console.log(note, "delayRelease", delayReleaseTime)
 
 			this.pSynth.triggerRelease(note, `+${delayReleaseTime}`)
 			this.setState(prevState => ({
@@ -297,7 +295,7 @@ export default class KeyboardController extends Component {
 		sustain = parseFloat(sustain) || this.state.envelope.sustain
 		release = parseFloat(release) || this.state.envelope.release
 
-		console.log("setEnvelope", attack, decay, sustain, release)
+		// console.log("setEnvelope", attack, decay, sustain, release)
 
 		this.setState({
 			envelope: {

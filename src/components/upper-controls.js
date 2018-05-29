@@ -167,7 +167,6 @@ class EnvelopeSlider extends Component {
 }
 
 // ============ FILTER ============ //
-const frequencyBins = [20, 50, 100, 200, 500, 1000, 2000, 5000, 10000, 20000]
 
 class FilterControls extends Component {
 	constructor(){
@@ -212,6 +211,7 @@ class FilterControls extends Component {
 			"lowpass",
 			"highpass",
 			"bandpass",
+			"notch",
 			"highshelf",
 			"lowshelf",
 		]
@@ -219,89 +219,6 @@ class FilterControls extends Component {
 		// Methods
 		this.updateQ = this.updateQ.bind(this)
 		this.updateFreq = this.updateFreq.bind(this)
-	}
-
-	static getDerivedStateFromProps(nextProps, nextState){
-		let newData = [0,0,0,0,0,0,0,0,0,0]
-		let filterPattern = ["before", "at", "after"]
-		let Q = nextProps.filter.Q
-		let f = nextProps.filter.frequency
-		let min = -5
-		// Pattern: [before f, at f, after f]
-
-		switch(nextProps.filter.type){
-			case "allpass": 
-				filterPattern = [Q, Q, Q]
-				break;
-			case "lowpass":
-				filterPattern = [0, Q, min]
-				break;
-			case "highpass":
-				filterPattern = [min, Q, 0]
-				break;
-			case "bandpass":
-				filterPattern = [0, Q, 0]
-				break;
-			case "lowshelf":
-				filterPattern = [Q, 0, min]
-				break;
-			case "highshelf":
-				filterPattern = [min, 0, Q]
-				break;
-			default:
-				filterPattern = [0,0,0]
-				break
-		}
-
-		f = FilterControls.roundToValues(f, frequencyBins)
-		let f_idx = frequencyBins.indexOf(f)
-
-		for (var i = 0; i < newData.length; i++) {
-			if (i < f_idx) {
-				newData[i] = filterPattern[0]
-			}
-			else if (i === f_idx) {
-				newData[i] = filterPattern[1]
-			}
-			else if (i > f_idx) {
-				newData[i] = filterPattern[2]
-			}
-		}
-
-		// console.log(nextProps.filter.type, filterPattern, newData)
-		// console.log(newData)
-		// return FilterControls.formatData(newData)
-		return {data: newData}
-	}
-
-	// static formatData(newData){
-	// 	return {
-	// 		data: {
-	// 			labels: this.frequencyBins,
-	// 			datasets: [{
-	// 				data: newData,
-	// 				borderColor: 'rgba(14,0,51,1)',
-	// 				borderWidth: 1,
-	// 				fill: true,
-	// 				pointRadius: 1
-	// 			}]
-	// 		}
-	// 	}
-	// }
-
-	static roundToValues(num, array){
-		let last_idx = array.length
-		let mp_idx = parseInt(last_idx/2, 10)
-
-		if (last_idx <= 1){
-			return (array[1] - num) <= (array[0] - num) ? array[1] : array[0]
-		}
-		else if (num > array[mp_idx]){
-			return FilterControls.roundToValues(num, array.slice(mp_idx, last_idx))
-		} else if (num < array[mp_idx]) {
-			return FilterControls.roundToValues(num, array.slice(0, mp_idx))
-		}
-
 	}
 
 	updateQ(newValue){
@@ -339,10 +256,12 @@ class FilterControls extends Component {
 
 		return(
 			<div className="ctrl-container" id="filter-controls">
-				<div id="filter-type-select">
+				<div id="filter-type-select" ref="filter-buttons">
 					{FilterButtons}
 				</div>
-				<div id="filter-graph">
+				<div 
+					id="filter-graph"
+				>
 					{filterValuesIndicator}
 					<VerticalSlider
 						className="ctrl-slider"
@@ -362,7 +281,8 @@ class FilterControls extends Component {
 					<FilterGraph 
 						className="fill"
 						filterType={this.props.filter.type}
-						filterData={this.state.data}
+						frequency={this.props.filter.frequency}
+						Q={this.props.filter.Q}
 					/>
 
 					<HorizontalSlider

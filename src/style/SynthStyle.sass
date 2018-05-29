@@ -11,6 +11,7 @@ body
 	margin: 0
 	font-family: "Roboto", -apple-system,  sans-serif
 	font-size: $font-size
+	background-color: $blue-lightest
 
 .keyboard-container
 	z-index: auto
@@ -177,7 +178,9 @@ body
 			#filter-controls
 				#filter-type-select
 					display: flex
+					// display: inline-block
 					.filter-button
+						// float: left
 						margin: 4px
 						img
 							max-width: 20px
@@ -188,7 +191,7 @@ body
 					display: flex
 					flex-wrap: wrap
 					margin: 4px
-					width: 208px
+					width: 248px
 					background-color: $white-trans
 					+box-shadow(0, 2px, 4px, $black, true)
 
@@ -197,7 +200,7 @@ body
 						top: 0
 						right: 0
 						text-align: right
-						color: $black
+						color: $blue-dark
 						font-size: 10px
 						padding: 4px
 					.filter-graph-container
