@@ -208,48 +208,4 @@
 .grey.text-dark {
   color: #444444; }
 
-.vertical-slider {
-  position: relative;
-  height: 56px;
-  width: 2px;
-  transform: translateX(-1px);
-  margin: 16px 24px 16px 24px;
-  background-color: #284CAC; }
-  .vertical-slider .min-track {
-    z-index: 0;
-    width: 100%;
-    position: absolute;
-    bottom: 0;
-    background-color: #111111;
-    opacity: 0.7; }
-  .vertical-slider .slider-thumb {
-    z-index: 1;
-    position: absolute;
-    width: 24px;
-    height: 16px;
-    background: #F2F2F2;
-    background: -moz-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #fafafa), color-stop(100%, #F2F2F2));
-    background: -webkit-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: -o-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: -ms-linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    background: linear-gradient(to bottom right, #fafafa 0%, #F2F2F2 100%);
-    -webkit-box-shadow: 0 2px 4px #111111;
-    -moz-box-shadow: 0 2px 4px #111111;
-    box-shadow: 0 2px 4px #111111;
-    border-radius: 4px;
-    transform: translateX(-50%) translateX(1px) translateY(50%);
-    cursor: pointer; }
-    .vertical-slider .slider-thumb:active, .vertical-slider .slider-thumb:focus {
-      -webkit-box-shadow: 0 0 2px #111111;
-      -moz-box-shadow: 0 0 2px #111111;
-      box-shadow: 0 0 2px #111111;
-      background: #eaeaea;
-      background: -moz-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: -webkit-gradient(linear, top left, bottom right, color-stop(0%, #F2F2F2), color-stop(100%, #eaeaea));
-      background: -webkit-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: -o-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: -ms-linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%);
-      background: linear-gradient(to bottom right, #F2F2F2 0%, #eaeaea 100%); }
-
-/*# sourceMappingURL=VerticalSlider.css.map */
+/*# sourceMappingURL=colors.css.map */

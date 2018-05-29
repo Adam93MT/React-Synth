@@ -11,6 +11,7 @@ body
 	margin: 0
 	font-family: "Roboto", -apple-system,  sans-serif
 	font-size: $font-size
+	background-color: $blue-lightest
 
 .keyboard-container
 	z-index: auto
@@ -96,7 +97,7 @@ body
 				text-align: center
 				font-weight: 500
 			
-			.ctrl-key
+			.ctrl-button, .ctrl-key
 				margin: $white-key-margin * 4
 				position: relative
 				color: $black
@@ -104,10 +105,19 @@ body
 				+box-shadow(0, 2px, 4px, $black)
 				border-radius: 4px
 				justify-self: stretch
+				cursor: pointer
 
 				&.pressed
 					+box-shadow(0, 0, 2px, $black)
 					+CornerToCornerGradient($off-white, $light-grey)
+
+				&.selected, &:hover
+					+CornerToCornerGradient($white, $off-white)
+					+box-shadow(0, 2px, 4px, $black)
+					opacity: 1
+				&:active
+					+box-shadow(0, 0px, 2px, $black)
+
 				.key-text
 					padding: 32px 0
 				.control-command
@@ -118,6 +128,17 @@ body
 					top: 0
 					margin: 8%
 
+			.ctrl-key
+				+CornerToCornerGradient($white, $off-white)
+				+box-shadow(0, 2px, 4px, $black)
+
+			.ctrl-button
+				display: flex
+				justify-content: center
+				align-items: center
+				+CornerToCornerGradient($off-white, $indigo-lightest)
+				+box-shadow(0, 1px, 3px, $black)
+				opacity: 0.6
 
 		&#upper-controls
 			display: flex
@@ -128,6 +149,8 @@ body
 			+box-shadow(0, 2px, 4px, $black)
 			background-color: $blue
 			color: $white
+			max-width: 100%
+			max-width: 100vw
 
 			.ctrl-container
 				padding: 16px 32px
@@ -140,21 +163,8 @@ body
 				.ctrl-label
 					grid-column: 1/3
 					margin: 2px auto
-				.wave-key
+				.wave-button
 					margin: 0
-					display: flex
-					justify-content: center
-					align-items: center
-					cursor: pointer
-					+CornerToCornerGradient($off-white, $indigo-lightest)
-					+box-shadow(0, 1px, 3px, $black)
-					opacity: 0.6
-					&.selected, &:hover
-						+CornerToCornerGradient($white, $off-white)
-						+box-shadow(0, 2px, 4px, $black)
-						opacity: 1
-					&:active
-						+box-shadow(0, 0px, 2px, $black)
 					img
 						padding: 8px
 			#envelope-controls
@@ -165,10 +175,46 @@ body
 					flex-direction: column
 					align-items: center
 					padding: 0 6px
+			#filter-controls
+				#filter-type-select
+					display: flex
+					// display: inline-block
+					.filter-button
+						// float: left
+						margin: 4px
+						img
+							max-width: 20px
+							padding: 4px
 
-					// .ctrl-slider
-					// 	width: 8px
-					// 	height: 82px
+				#filter-graph
+					position: relative
+					display: flex
+					flex-wrap: wrap
+					margin: 4px
+					width: 248px
+					background-color: $white-trans
+					+box-shadow(0, 2px, 4px, $black, true)
+
+					.filterValues
+						position: absolute
+						top: 0
+						right: 0
+						text-align: right
+						color: $blue-dark
+						font-size: 10px
+						padding: 4px
+					.filter-graph-container
+						display: inline-block
+						flex: 1
+						height: 92px
+					.vertical-slider
+						display: inline-block
+					.horizontal-slider
+						flex: 1 1 100%
+
+						// padding: 2px
+						// margin: 8px 0
+
 
 		&#lower-controls
 			z-index: auto

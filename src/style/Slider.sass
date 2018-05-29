@@ -5,35 +5,44 @@ $track-width: 2px
 $thumb-width: 24px
 $thumb-height: 16px
 
-.vertical-slider
+.slider-relative-container
 	position: relative
-	height: 56px
-	width: $track-width
-	transform: translateX(-$track-width/2)
-	margin: $thumb-height $thumb-width $thumb-height $thumb-width
-
+.slider
+	position: relative
 	background-color: $blue-dark
 
 	.min-track
 		z-index: 0
-		width: 100%
 		position: absolute
-		bottom: 0
-		// left: -$track-width/2
 		background-color: $black
 		opacity: 0.7
 
 	.slider-thumb
 		z-index: 1
 		position: absolute
-		width: 24px
-		height: 16px
 		+CornerToCornerGradient($white, $off-white)
 		+box-shadow(0, 2px, 4px, $black)
 		border-radius: 4px
-		transform: translateX(-50%) translateX($track-width/2) translateY(50%)
 		cursor: pointer
 
 		&:active, &:focus
 			+box-shadow(0, 0, 2px, $black)
 			+CornerToCornerGradient($off-white, $light-grey)
+
+	&.disabled
+		opacity: 0.5
+		.slider-thumb
+			cursor: auto
+			&:active, &:focus
+				+CornerToCornerGradient($white, $off-white)
+				+box-shadow(0, 2px, 4px, $black)
+
+.vertical-slider
+	.min-track
+		bottom: 0
+		width: 100%
+
+.horizontal-slider
+	.min-track
+		left: 0
+		height: 100%

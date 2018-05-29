@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import Tone from 'tone'
 import { WhiteKey, BlackKey } from './keys.js'
-import { UpperControls, LowerControls } from './controls.js'
+import { UpperControls } from './upper-controls.js'
+import { LowerControls } from './lower-controls.js'
 import Constants from './constants.js'
 
 // =============================== //
@@ -12,7 +13,8 @@ export default class KeyboardController extends Component {
 	constructor(){
 		super()
 		// static
-		this.Synth = new Tone.PolySynth() // we don't want to re-render every time this changes, only certain elements
+		this.pSynth = new Tone.PolySynth()
+		this.Filter = new Tone.Filter(1000, "allpass", -12)
 		this.startNote = 'C'
 		this.numOctaves = 1 + 6/12
 		this.octaveMinMax = [2, 7]
@@ -20,6 +22,7 @@ export default class KeyboardController extends Component {
 		this.releaseTimers = []
 
 		// functions
+		this.setupSynth = this.setupSynth.bind(this)
 		this.handleKeyDown = this.handleKeyDown.bind(this)
 		this.handleKeyUp = this.handleKeyUp.bind(this)
 		this.incrementOctave = this.incrementOctave.bind(this)
@@ -27,6 +30,10 @@ export default class KeyboardController extends Component {
 		this.setBend = this.setBend.bind(this)
 		this.setWaveform = this.setWaveform.bind(this)
 		this.setEnvelope = this.setEnvelope.bind(this)
+		this.setFilterType = this.setFilterType.bind(this)
+		this.setFilterParams = this.setFilterParams.bind(this)
+		this.setupFilter = this.setupFilter.bind(this)
+		this.removeFilter = this.removeFilter.bind(this)
 		this.triggerAttack = this.triggerAttack.bind(this)
 		this.triggerRelease = this.triggerRelease.bind(this)
 
@@ -42,6 +49,13 @@ export default class KeyboardController extends Component {
 				decay: 2.7,
 				sustain: 0.2,
 				release: 0.15
+			},
+			filter: {
+				type: "allpass",
+				rolloff: -12,
+				frequency: 440,
+				Q: 1,
+				gain: 0
 			}
 		}
 	}
@@ -51,7 +65,9 @@ export default class KeyboardController extends Component {
 		window.addEventListener("keyup", this.handleKeyUp, false);
 
 		this.setupSynth()
-		this.Synth.toMaster()
+		// this.setupFilter()
+		this.pSynth.toMaster()
+
 	}
 	componentWillUnmount(){
 		window.removeEventListener("keydown", this.handleKeyDown, false);
@@ -59,10 +75,10 @@ export default class KeyboardController extends Component {
 	}
 
 	setupSynth(){
-		this.Synth.set({
+		this.pSynth.set({
 			polyphony: 8,
 			volume: -12,
-			voice: Tone.Synth,
+			voice: Tone.MonoSynth,
 			oscillator: {
 				type: this.state.waveform
 			},
@@ -83,8 +99,8 @@ export default class KeyboardController extends Component {
     		if (this.isNoteKeyPress(thisChar)) {
     			let note = this.getNoteFromTextKey(thisChar)
     			if (note) {
-					if (this.Synth._context.state !== 'running') {
-						this.Synth._context.resume().then(() => {
+					if (this.pSynth.context.state !== 'running') {
+						this.pSynth.context.resume().then(() => {
 							console.log("Resuming Audio Context")
 							this.triggerAttack(note)
 						})
@@ -190,7 +206,10 @@ export default class KeyboardController extends Component {
 	}
 
 	triggerAttack(note){
-		this.Synth.triggerAttack(note, `+${this.noteDelayTime}`)
+		// console.log("Attacking", note)
+		// console.log("Envelope:", this.pSynth.get("envelope").envelope)
+
+		this.pSynth.triggerAttack(note, `+${this.noteDelayTime}`)
 		let attackTime = Tone.now()
 
 		// if the note we're going to play is currently ringing, we just reset the attack time in state
@@ -219,13 +238,13 @@ export default class KeyboardController extends Component {
 			let noteInfo = this.state.currentChord.filter((n) => n.note === note)[0]
 			let noteAttackTime = noteInfo.attackTime ? noteInfo.attackTime : 0
 			let timeSinceAttack = currentTime - noteAttackTime
-			let envelopeAttack = this.Synth.get("envelope.attack").envelope.attack
+			let envelopeAttack = this.pSynth.get("envelope.attack").envelope.attack
 			let delayReleaseTime = timeSinceAttack < envelopeAttack ? (envelopeAttack - timeSinceAttack) + 0.1 : 0.1
 
-			console.log(currentTime, noteAttackTime, timeSinceAttack, envelopeAttack)
-			console.log(note, "delayRelease", delayReleaseTime)
+			// console.log(currentTime, noteAttackTime, timeSinceAttack, envelopeAttack)
+			// console.log(note, "delayRelease", delayReleaseTime)
 
-			this.Synth.triggerRelease(note, `+${delayReleaseTime}`)
+			this.pSynth.triggerRelease(note, `+${delayReleaseTime}`)
 			this.setState(prevState => ({
 				currentChord: this.state.currentChord.filter((n) => n.note !== note)
 			}))
@@ -254,7 +273,7 @@ export default class KeyboardController extends Component {
 		this.setState(prevState => ({
 			bend: bend
 		}))
-		this.Synth.set({
+		this.pSynth.set({
 			detune: bend
 		})
 	}
@@ -263,7 +282,7 @@ export default class KeyboardController extends Component {
 		this.setState({
 			waveform: type
 		})
-		this.Synth.set({
+		this.pSynth.set({
 			oscillator: {
 				type: type
 			}
@@ -276,7 +295,7 @@ export default class KeyboardController extends Component {
 		sustain = parseFloat(sustain) || this.state.envelope.sustain
 		release = parseFloat(release) || this.state.envelope.release
 
-		console.log("setEnvelope", attack, decay, sustain, release)
+		// console.log("setEnvelope", attack, decay, sustain, release)
 
 		this.setState({
 			envelope: {
@@ -287,7 +306,7 @@ export default class KeyboardController extends Component {
 			}
 		})
 
-		this.Synth.set({
+		this.pSynth.set({
 			envelope: {
 				attack: attack,
 				decay: decay,
@@ -295,6 +314,54 @@ export default class KeyboardController extends Component {
 				release: release
 			}
 		})
+	}
+
+	setFilterType(type){
+		let newFilter = this.state.filter
+		newFilter.type = type
+
+		this.setState(prevState => ({
+			filter: newFilter
+		}))
+
+		this.setupFilter()
+	}
+
+	setFilterParams({frequency, rolloff, Q}){
+		let newFilter = this.state.filter
+		if (frequency !== this.state.frequency){
+			newFilter.frequency = frequency
+		}
+		if (rolloff !== this.state.rolloff) {
+			newFilter.rolloff = rolloff
+		}
+		if (Q !== this.state.Q) {
+			newFilter.Q = Q
+		}
+
+		this.setState({
+			filter: newFilter
+		})
+
+		this.setupFilter()
+		
+	}
+
+	setupFilter(){
+		// this.Filter.dispose()
+		// this.Filter = new Tone.Filter(this.state.filter.frequency, this.state.filter.type, this.state.filter.rolloff)
+		this.Filter.type = this.state.filter.type
+		this.Filter.frequency.value = this.state.filter.frequency
+		// this.Filter.rolloff.value = this.state.filter.rolloff
+		this.Filter.Q.value = this.state.filter.Q
+		this.pSynth.disconnect()
+		this.pSynth.connect(this.Filter)
+		this.Filter.toMaster()
+	}
+	removeFilter(){
+		this.Filter.disconnect()
+		this.pSynth.disconnect()
+		this.pSynth.toMaster()
 	}
 
   	isSustaining(){
@@ -308,6 +375,7 @@ export default class KeyboardController extends Component {
   	}
 
 	render() {
+		// console.log(this.pSynth)
 		return (
 			<div className="keyboard-container">
 				<UpperControls 
@@ -315,6 +383,9 @@ export default class KeyboardController extends Component {
 					setWaveform={this.setWaveform}
 					envelope={this.state.envelope}
 					setEnvelope={this.setEnvelope}
+					filter={this.state.filter}
+					setFilterType={this.setFilterType}
+					setFilterParams={this.setFilterParams}
 				/>
 				<KeyboardContainer 
 					numOctaves={this.numOctaves} 
@@ -330,6 +401,9 @@ export default class KeyboardController extends Component {
 		)
 	}
 }
+/*
+
+*/
 
 // ============================== //
 // ===== KEYBOARD CONTAINER ===== //
