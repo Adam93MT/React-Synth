@@ -4,7 +4,6 @@
   "private": true,
   "dependencies": {
     "chart.js": "^2.7.3",
-    "merge": "^1.2.1",
     "react": "^16.6.3",
     "react-chartjsx": "^2.0.9",
     "react-dom": "^16.6.3",
